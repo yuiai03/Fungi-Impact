@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6883356173034809584}
   - component: {fileID: -7978639963548520947}
   - component: {fileID: 2302617928207951494}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Bullet
   m_TagString: PlayerBullet
   m_Icon: {fileID: 0}
@@ -164,8 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   damage: 10
-  spriteColor: {r: 0.07058824, g: 0.5764706, b: 1, a: 1}
-  bulletExplosion: {fileID: 6891930824014245391, guid: e791bfb53e22fc340b59a8180baa634e, type: 3}
+  bulletExplosionPrefab: {fileID: 6891930824014245391, guid: e791bfb53e22fc340b59a8180baa634e, type: 3}
   target: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
 --- !u!1 &6915139857687338534

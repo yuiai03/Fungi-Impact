@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &22104484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionFungusNameList: 
+  actionBossNameType: 0
   transitionController: {fileID: 139343366}
   managerRootConfig:
     mainMenu: Main Menu
@@ -160,6 +161,7 @@ MonoBehaviour:
     home: Home
     room: Room
     availableFungiConfig: {fileID: 11400000, guid: 35e188c335fbe784a97ab340e91e9928, type: 2}
+    availableBossConfig: {fileID: 0}
 --- !u!4 &22104485
 Transform:
   m_ObjectHideFlags: 0

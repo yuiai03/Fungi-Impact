@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5182359435b1ac34a858082a80daeec7, type: 3}
+  m_Name: Test Boss Config
+  m_EditorClassIdentifier: 
+  bossName: Test
+  bossDescription: 
+  bossModelSprite: {fileID: 21300000, guid: 9a4522a1719ed6e4099dd535d78cbd14, type: 3}
+  bossAvatar: {fileID: 21300000, guid: 9a4522a1719ed6e4099dd535d78cbd14, type: 3}
+  bossColor: {r: 1, g: 1, b: 1, a: 1}
+  fungusElemental:
+    elementalType: 4
+    elementalSprite: {fileID: 21300000, guid: 73e3bd484920471459c2a28eef2a01c8, type: 3}
