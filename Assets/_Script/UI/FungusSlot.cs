@@ -12,6 +12,7 @@ public class FungusSlot : MonoBehaviour
     private FungusPackedConfig fungusPackedConfig;
     private void Awake()
     {
+
         SetAvatar(defaultSprite);
 
         unPick.onClick.AddListener(() => EventManager.ActionOnUnPickFungus(slotIndex, fungusPackedConfig));

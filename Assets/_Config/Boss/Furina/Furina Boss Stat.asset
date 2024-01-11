@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6645339dc55e1b845968a0566c69b459, type: 3}
-  m_Name: Test Boss Stat
+  m_Name: Furina Boss Stat
   m_EditorClassIdentifier: 
   maxHealth: 10000
   damage: 10000

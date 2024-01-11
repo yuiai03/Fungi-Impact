@@ -17,8 +17,8 @@ MonoBehaviour:
     config: {fileID: 11400000, guid: 6d559a1ae6d7e8b46a0289badb48af09, type: 2}
     stats: {fileID: 11400000, guid: d8b3a8395bf91924195684e41adcdb33, type: 2}
   - bossNameType: 2
-    config: {fileID: 11400000, guid: 6d559a1ae6d7e8b46a0289badb48af09, type: 2}
-    stats: {fileID: 11400000, guid: d8b3a8395bf91924195684e41adcdb33, type: 2}
+    config: {fileID: 11400000, guid: fc81d4c75e8da904dacc5a5ba45cd1a3, type: 2}
+    stats: {fileID: 11400000, guid: 28fbb515b7d2dec4280b6e69e82908af, type: 2}
   - bossNameType: 3
-    config: {fileID: 11400000, guid: 6d559a1ae6d7e8b46a0289badb48af09, type: 2}
-    stats: {fileID: 11400000, guid: d8b3a8395bf91924195684e41adcdb33, type: 2}
+    config: {fileID: 11400000, guid: 33b1a80ff42fb2e41bcbc32106ec2dad, type: 2}
+    stats: {fileID: 11400000, guid: 334a8fd0f441a094b93f3e4d5ffe77bc, type: 2}

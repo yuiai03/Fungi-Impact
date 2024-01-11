@@ -2,35 +2,59 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BossList : MonoBehaviour
 {
     [SerializeField] private BossSlot bossSlotPrefab;
     public List<BossSlot> bossSlotList = new List<BossSlot>();
+
     private ManagerRoot managerRoot => ManagerRoot.instance;
 
-
+    private void Awake()
+    {
+    }
     private void Start()
     {
-        EventManager.onSelectSlotBoss += OnSelectSlotBoss;
+        EventManager.onShowInfoBoss += OnShowInfoBoss;
+        EventManager.onSelectBoss += OnSelectBoss;
         Init();
        
     }
     private void OnDestroy()
     {
-        EventManager.onSelectSlotBoss -= OnSelectSlotBoss;
+        EventManager.onShowInfoBoss -= OnShowInfoBoss;
+        EventManager.onSelectBoss -= OnSelectBoss;
     }
-    private void OnSelectSlotBoss(BossSlot bossSlot)
+    private void OnShowInfoBoss(BossSlot bossSlot, bool state)
     {
-        foreach (var item in bossSlotList)
+        foreach (var slot in bossSlotList)
         {
-            if(item != bossSlot)
+            if(slot != bossSlot)
             {
-                item.selected = false;
+                slot.SetShowingInfoState(!state);
+            }
+            else
+            {
+                slot.SetShowingInfoState(state);
             }
         }
     }
-
+    private void OnSelectBoss(BossSlot bossSlot)
+    {
+        foreach (var slot in bossSlotList)
+        {
+            if (slot != bossSlot)
+            {
+                slot.SetSelectState(false);
+                slot.SetShowingInfoState(false);
+            }
+            else
+            {
+                slot.SetSelectState(true);
+            }
+        }
+    }
     void Init()
     {
         List<BossPackedConfig> bossPackedConfigList =
@@ -40,10 +64,16 @@ public class BossList : MonoBehaviour
         {
             BossPackedConfig bossPackedConfig = bossPackedConfigList[i];
             BossSlot bossSlot = Instantiate(bossSlotPrefab, transform);
-            bossSlot.SetIndex(i);
-            bossSlot.bossPackedConfig = bossPackedConfig;
+            bossSlot.SetBossPackedConfig(bossPackedConfig);
+
+            bossSlot.SetElementalImage(bossPackedConfig.config.fungusElemental.elementalSprite);
+            bossSlot.SetAvatarImage(bossPackedConfig.config.bossAvatar);
+            bossSlot.SetName(bossPackedConfig.config.bossName);
+            bossSlot.SetHealth(bossPackedConfig.stats.maxHealth);
+            bossSlot.SetLv(bossPackedConfig.stats.lv);
 
             bossSlotList.Add(bossSlot);
         }
+
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class BossManager : MonoBehaviour
 {
     [SerializeField] private BossInfoReader bossPrefab;
-    public List<BossData> bossDataList = new List<BossData>();
     public List<Transform> spawnPointList = new List<Transform>();
+    public BossData currentBossData = new BossData();
 
 
     private ManagerRoot managerRoot => ManagerRoot.instance;
@@ -26,6 +26,21 @@ public class BossManager : MonoBehaviour
     }
     public void GetDataBoss()
     {
+        BossNameType bossNameType = managerRoot.actionBossNameType;
         AvailableBossConfig availableBossConfig = managerRoot.ManagerRootConfig.availableBossConfig;
+
+        BossPackedConfig bossPackedConfig = availableBossConfig.GetBossPackedConfigByNameType(bossNameType);
+        
+        BossData bossData = new BossData();
+        bossData.bossConfig = bossPackedConfig.config;
+        bossData.bossStats = bossPackedConfig.stats;
+
+        bossData.lv = bossData.bossStats.lv;
+        bossData.maxHealth = bossData.bossStats.maxHealth;
+        bossData.health = bossData.bossStats.maxHealth;
+        bossData.damage = bossData.bossStats.damage;
+        bossData.moveSpeed = bossData.bossStats.moveSpeed;
+
+        currentBossData = bossData;
     }
 }

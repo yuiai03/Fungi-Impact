@@ -9,6 +9,8 @@ public class HomeUI : MonoBehaviour
     [SerializeField] private Button returnButton;
     [SerializeField] private Button teamSetupButton;
     [SerializeField] private BossList bossList;
+
+    [SerializeField] private List<BgOutlineColor> bgOutlineColorList;
     private ManagerRoot managerRoot => ManagerRoot.instance;
     private void Awake()
     {
@@ -21,11 +23,12 @@ public class HomeUI : MonoBehaviour
         bool canChangeScene = false;
         foreach(var bossSlot in bossList.bossSlotList)
         {
-            if (bossSlot.selected) canChangeScene = true;
+            if (bossSlot.isSelecting) canChangeScene = true;
         }
 
         if (canChangeScene)
         {
+            managerRoot.GetNameTypeBossChose(bossList.bossSlotList);
             managerRoot.TransitionToScene(managerRoot.ManagerRootConfig.teamSetup);
         }
     }
@@ -34,5 +37,17 @@ public class HomeUI : MonoBehaviour
     {
         managerRoot.TransitionToScene(managerRoot.ManagerRootConfig.mainMenu);
 
+    }
+    public Color GetColor(BgColorOutlineType bgColorType)
+    {
+        Color color = new Color();
+        foreach (var bgOutlineColor in bgOutlineColorList)
+        {
+            if (bgOutlineColor.type == bgColorType)
+            {
+                color = bgOutlineColor.color;
+            }
+        }
+        return color;
     }
 }

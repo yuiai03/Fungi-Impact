@@ -15,4 +15,5 @@ public class BossConfig : ScriptableObject
     public Color bossColor;
 
     public Elemental fungusElemental;
+
 }

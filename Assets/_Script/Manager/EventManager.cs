@@ -13,8 +13,11 @@ public class EventManager
     public delegate void OnSwitchFungus(FungusData fungusData);
     public static event OnSwitchFungus onSwitchFungus;
 
+    public delegate void OnShowInfoBoss(BossSlot bossSlot, bool state);
+    public static event OnShowInfoBoss onShowInfoBoss;
+
     public delegate void OnSelectBoss(BossSlot bossSlot);
-    public static event OnSelectBoss onSelectSlotBoss;
+    public static event OnSelectBoss onSelectBoss;
 
     public static void ActionOnPickFungus(int slotIndex, FungusPackedConfig config)
     {
@@ -28,8 +31,12 @@ public class EventManager
     {
         onSwitchFungus?.Invoke(fungusData);
     }
-    public static void ActionOnSelectSlotBoss(BossSlot bossSlot)
+    public static void ActionOnShowInfoBoss(BossSlot bossSlot, bool state)
     {
-        onSelectSlotBoss?.Invoke(bossSlot);
+        onShowInfoBoss?.Invoke(bossSlot, state);
+    }
+    public static void ActionOnSelectBoss(BossSlot bossSlot)
+    {
+        onSelectBoss?.Invoke(bossSlot);
     }
 }

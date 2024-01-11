@@ -11,8 +11,11 @@ public class GameConfig
     public const float choseSlotAlpha = 1f;
 
     public const float scaleCardDuration = 0.15f;
+    public const float scaleBtnDuration = 0.15f;
 
     public const float switchSlotRecoveryTime = 1f;
 
     public const float damageSliderChangeWaitTime = 1f;
+
+    public const float moveYBossSlotDuration = 0.2f;
 }
