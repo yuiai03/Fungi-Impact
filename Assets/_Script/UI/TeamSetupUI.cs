@@ -13,6 +13,8 @@ public class BgOutlineColor
 }
 public class TeamSetupUI : MonoBehaviour
 {
+    [SerializeField] private GameObject interactiveBg;
+
     [SerializeField] private Button startButton;
     [SerializeField] private Button returnButton;
     [SerializeField] private List<BgOutlineColor> bgOutlineColorList;
@@ -24,6 +26,9 @@ public class TeamSetupUI : MonoBehaviour
     {
         startButton.onClick.AddListener(OnClickStart);
         returnButton.onClick.AddListener(OnClickReturn);
+
+        InteractiveBgState(false);
+
     }
     private void Start()
     {
@@ -36,6 +41,8 @@ public class TeamSetupUI : MonoBehaviour
         EventManager.onUnPickFungus -= SortFungiList;
         EventManager.onPickFungus -= SortFungiList;
     }
+    void InteractiveBgState(bool state) => interactiveBg.SetActive(state);
+
     private void OnClickReturn()
     {
         managerRoot.TransitionToScene(managerRoot.ManagerRootConfig.home);
@@ -53,6 +60,8 @@ public class TeamSetupUI : MonoBehaviour
 
         if (canChangeScene)
         {
+            InteractiveBgState(transform);
+
             managerRoot.GetNameTypeFungusPicked(fungusSlotList);
             managerRoot.TransitionToScene(managerRoot.ManagerRootConfig.room);
         }

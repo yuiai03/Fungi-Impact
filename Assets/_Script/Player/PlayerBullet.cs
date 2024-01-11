@@ -17,6 +17,9 @@ public class PlayerBullet : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Gradient gradientParticle;
     private Gradient gradientBullet;
+
+    private PlayerInfoReader playerInfo;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -26,6 +29,10 @@ public class PlayerBullet : MonoBehaviour
     private void OnEnable()
     {
         trailRenderer.Clear();
+    }
+    public void GetPlayerInfo(PlayerInfoReader playerInfo)
+    {
+        this.playerInfo = playerInfo;
     }
     public void GetConfig(Color color, Gradient gParticle, Gradient gBullet)
     {
@@ -53,7 +60,11 @@ public class PlayerBullet : MonoBehaviour
         {
             collision.GetComponent<BossController>();
             Vector3 collisionPos = collision.transform.position;
+
+            collision.GetComponent<BossHealth>().TakeDamage(playerInfo.PlayerData.damage);
+
             TextPopUp textPopUp = PoolManager.instance.SpawnObj(PoolManager.instance.textPopUpPrefab, collisionPos, PoolType.TextPopUp);
+            textPopUp.SetPopUpDamage(playerInfo.PlayerData.damage, playerInfo.PlayerData.fungusConfig.fungusColor);
 
         }
         gameObject.SetActive(false);

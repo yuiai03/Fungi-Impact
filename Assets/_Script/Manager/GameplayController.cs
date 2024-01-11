@@ -9,6 +9,7 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private bool needRecoveryInteractSlot = false;
     [SerializeField] private float countSwitchSlotRecoveryTime = 0;
 
+    public PlayerInfoReader PlayerInfoReader { get => playerInfo; }
     [SerializeField] private PlayerInfoReader playerInfo;
     [SerializeField] private FungusSlotListHUD fungusSlotListHUD;
 

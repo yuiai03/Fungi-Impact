@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class HomeUI : MonoBehaviour
 {
+    [SerializeField] private GameObject interactiveBg;
     [SerializeField] private Button returnButton;
     [SerializeField] private Button teamSetupButton;
     [SerializeField] private BossList bossList;
@@ -16,6 +17,8 @@ public class HomeUI : MonoBehaviour
     {
         returnButton.onClick.AddListener(OnReturnClick);
         teamSetupButton.onClick.AddListener(OnTeamSetupClick);
+
+        InteractiveBgState(false);
     }
 
     private void OnTeamSetupClick()
@@ -28,11 +31,13 @@ public class HomeUI : MonoBehaviour
 
         if (canChangeScene)
         {
+            InteractiveBgState(true);
+
             managerRoot.GetNameTypeBossChose(bossList.bossSlotList);
             managerRoot.TransitionToScene(managerRoot.ManagerRootConfig.teamSetup);
         }
     }
-
+    void InteractiveBgState(bool state) => interactiveBg.SetActive(state);
     private void OnReturnClick()
     {
         managerRoot.TransitionToScene(managerRoot.ManagerRootConfig.mainMenu);

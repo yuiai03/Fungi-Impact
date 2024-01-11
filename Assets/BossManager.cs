@@ -2,14 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class SpawnBossInfo
+{
+    public BossNameType bossNameType;
+    public BossInfoReader bossInfoReader;
+}
 public class BossManager : MonoBehaviour
 {
-    [SerializeField] private BossInfoReader bossPrefab;
+    [SerializeField] private BossInfoReader bossInfo;
+
+    [SerializeField] private List<SpawnBossInfo> spawnBossInfoList;
+
+    [SerializeField] private BossData currentBossData = new BossData();
+
+    [SerializeField] private BossCurrentStatusHUD currentStatusHUD;
     public List<Transform> spawnPointList = new List<Transform>();
-    public BossData currentBossData = new BossData();
-
-
     private ManagerRoot managerRoot => ManagerRoot.instance;
+    private GameplayController gameplayController => GameplayController.instance;
 
     private void Start()
     {
@@ -17,12 +27,25 @@ public class BossManager : MonoBehaviour
     }
     public void Init()
     {
+        GetDataBoss();
         SpawnBoss();
+        LoadBossInfo();
+    }
+    public void LoadBossInfo()
+    {
+        bossInfo.GetData(currentBossData, currentStatusHUD, gameplayController.PlayerInfoReader);
     }
     public void SpawnBoss()
     {
-        var boss = Instantiate(bossPrefab, spawnPointList[0].position, bossPrefab.transform.rotation);
-        boss.transform.SetParent(transform);
+        BossNameType actionBossNameType = managerRoot.actionBossNameType;
+        foreach(var spawnBossInfo in spawnBossInfoList)
+        {
+            if(spawnBossInfo.bossNameType == actionBossNameType)
+            {
+                bossInfo = Instantiate(spawnBossInfo.bossInfoReader, spawnPointList[0].position, Quaternion.identity);
+                bossInfo.transform.SetParent(transform);
+            }
+        }
     }
     public void GetDataBoss()
     {

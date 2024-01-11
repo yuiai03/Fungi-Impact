@@ -11,6 +11,7 @@ public class BossSlot : MonoBehaviour
 {
     public bool isSelecting;
     public bool isShowingInfo;
+
     [SerializeField] private Button selectBossButton;
     [SerializeField] private Button showInfoButton;
     [SerializeField] private Button infoPanelButton;
@@ -30,7 +31,8 @@ public class BossSlot : MonoBehaviour
 
     private HomeUI homeUI;
 
-
+    private Tween scaleTween;
+    private Tween moveYTween;
     private void Awake()
     {
         homeUI = transform.root.GetComponent<HomeUI>();
@@ -44,7 +46,11 @@ public class BossSlot : MonoBehaviour
 
         initPosY = rectTransformRoot.localPosition.y;
     }
-
+    private void OnDestroy()
+    {
+        scaleTween.Kill();
+        moveYTween.Kill();
+    }
     private void OnSelectBossClick()
     {
         EventManager.ActionOnSelectBoss(this);
@@ -84,9 +90,9 @@ public class BossSlot : MonoBehaviour
 
     void DOSelect(float scaleValue, float moveYValue, Color color)
     {
-        transform.DOScale(scaleValue, GameConfig.scaleBtnDuration);
+        scaleTween = transform.DOScale(scaleValue, GameConfig.scaleBtnDuration);
 
-        rectTransformRoot.DOAnchorPosY(moveYValue, GameConfig.moveYBossSlotDuration);
+        moveYTween = rectTransformRoot.DOAnchorPosY(moveYValue, GameConfig.moveYBossSlotDuration);
 
         SetBgOutlineColor(color);
 

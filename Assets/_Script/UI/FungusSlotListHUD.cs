@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class FungusSlotListHUD : MonoBehaviour
 {
-
     [SerializeField] private FungusSlotHUD fungusSlotHUDPrefab;
     [SerializeField] private List<FungusSlotHUD> fungusSlotHUDList = new List<FungusSlotHUD>();
     public List<FungusSlotHUD> FungusSlotHUDList { get => fungusSlotHUDList; }

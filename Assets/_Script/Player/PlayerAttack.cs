@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private PlayerInfoReader playerConfig;
+    private PlayerInfoReader playerInfo;
     private PlayerController playerController;
     [SerializeField] private PlayerBullet bulletPrefab;
     private CameraCollider cameraCollider => CameraCollider.instance;
@@ -14,7 +14,7 @@ public class PlayerAttack : MonoBehaviour
     private void Awake()
     {
 
-        playerConfig = GetComponent<PlayerInfoReader>();
+        playerInfo = GetComponent<PlayerInfoReader>();
         playerController = GetComponent<PlayerController>();
     }
 
@@ -23,11 +23,12 @@ public class PlayerAttack : MonoBehaviour
         PlayerBullet bullet = PoolManager.instance.SpawnObj(bulletPrefab, transform.position, PoolType.PlayerBullet);
         if (bullet != null)
         {
-            var config = playerConfig.PlayerData.fungusConfig;
+            var config = playerInfo.PlayerData.fungusConfig;
             bullet.target = cameraCollider.GetTargetTransform();
             bullet.direction = playerController.SetDirectionAttackWithOutTarget();
             bullet.GetConfig(config.fungusColor, config.gradientParticle, config.gradientBullet);
             bullet.MoveToTarget();
+            bullet.GetPlayerInfo(playerInfo);
         }
     }
 }
