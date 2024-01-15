@@ -18,9 +18,18 @@ public class BossManager : MonoBehaviour
 
     [SerializeField] private BossCurrentStatusHUD currentStatusHUD;
     public List<Transform> spawnPointList = new List<Transform>();
-    private ManagerRoot managerRoot => ManagerRoot.instance;
-    private GameplayController gameplayController => GameplayController.instance;
+    private ManagerRoot managerRoot => ManagerRoot.Instance;
 
+    private void Awake()
+    {
+        EventManager.onSwitchFungus += OnSwitchFungus;
+        EventManager.onFungusDie += OnFungusDie;
+    }
+    private void OnDestroy()
+    {
+        EventManager.onSwitchFungus -= OnSwitchFungus;
+        EventManager.onFungusDie -= OnFungusDie;
+    }
     private void Start()
     {
         Init();
@@ -31,19 +40,32 @@ public class BossManager : MonoBehaviour
         SpawnBoss();
         LoadBossInfo();
     }
+    void OnFungusDie()
+    {
+        LoadTargetInfo(null);
+    }
+    void OnSwitchFungus(FungusInfoReader oldFungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD)
+    {
+        LoadTargetInfo(newFungusInfo);
+    }
     public void LoadBossInfo()
     {
-        bossInfo.GetData(currentBossData, currentStatusHUD, gameplayController.PlayerInfoReader);
+        bossInfo.GetData(currentBossData, currentStatusHUD);
+    }
+    public void LoadTargetInfo(FungusInfoReader fungusInfo)
+    {
+        bossInfo.GetTarget(fungusInfo);
     }
     public void SpawnBoss()
     {
         BossNameType actionBossNameType = managerRoot.actionBossNameType;
-        foreach(var spawnBossInfo in spawnBossInfoList)
+        foreach(var spawnBossInfo in managerRoot.ManagerRootConfig.availableBossConfig.bossPackedConfigList)
         {
             if(spawnBossInfo.bossNameType == actionBossNameType)
             {
                 bossInfo = Instantiate(spawnBossInfo.bossInfoReader, spawnPointList[0].position, Quaternion.identity);
                 bossInfo.transform.SetParent(transform);
+                Debug.Log(bossInfo);
             }
         }
     }

@@ -8,6 +8,7 @@ public class BossPackedConfig
     public BossNameType bossNameType;
     public BossConfig config;
     public BossStats stats;
+    public BossInfoReader bossInfoReader;
 }
 [CreateAssetMenu(fileName = "New Available Boss Config", menuName = "Config/Available Boss Config")]
 public class AvailableBossConfig : ScriptableObject

@@ -21,7 +21,7 @@ public class TeamSetupUI : MonoBehaviour
 
     public List<FungusSlot> fungusSlotList = new List<FungusSlot>();
     public List<FungusCard> fungusCardList = new List<FungusCard>();
-    private ManagerRoot managerRoot => ManagerRoot.instance;
+    private ManagerRoot managerRoot => ManagerRoot.Instance;
     private void Awake()
     {
         startButton.onClick.AddListener(OnClickStart);

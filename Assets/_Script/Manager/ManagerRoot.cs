@@ -4,7 +4,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ManagerRoot : MonoBehaviour
+public class ManagerRoot : Singleton<ManagerRoot>
 {
     public List<FungusNameType> actionFungusNameList = new List<FungusNameType>();
     public BossNameType actionBossNameType = BossNameType.None;
@@ -14,15 +14,9 @@ public class ManagerRoot : MonoBehaviour
 
     public ManagerRootConfig ManagerRootConfig { get => managerRootConfig; }
     [SerializeField] private ManagerRootConfig managerRootConfig;
-
-    public static ManagerRoot instance;
-    private void Awake()
-    {
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
     public void GetNameTypeFungusPicked(List<FungusSlot> fungusSlotList)
     {
+        
         foreach(var fungusSlot in fungusSlotList)
         {
             actionFungusNameList.Add(fungusSlot.FungusPackedConfig.fungusNameType);

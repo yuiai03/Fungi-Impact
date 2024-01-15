@@ -98,16 +98,16 @@ GameObject:
   - component: {fileID: 6288142618121218655}
   - component: {fileID: 6441036539118840472}
   - component: {fileID: 2711722794065485731}
-  - component: {fileID: 5583787869078295526}
-  - component: {fileID: 4596923107208575528}
   - component: {fileID: 7612341718086445647}
-  m_Layer: 0
+  - component: {fileID: 4996489139034222563}
+  - component: {fileID: 5579739778121716334}
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5280785793006747010
 Transform:
   m_ObjectHideFlags: 0
@@ -251,33 +251,6 @@ MonoBehaviour:
   stamina: 0
   countRecoveryTime: 0
   staminaBar: {fileID: 3578279916176594043}
---- !u!114 &5583787869078295526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812432489111245860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7aeadb75dc5a4a47a9dda6517f0001e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 2302617928207951494, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
---- !u!114 &4596923107208575528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812432489111245860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce4169055b680d9498abd71d26733f0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countChangeDamageSlider: 0
-  takingDamage: 0
 --- !u!114 &7612341718086445647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,6 +263,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a187660f4838bc04eaf87fe5896fe03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4996489139034222563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812432489111245860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f03af94210ade3408cd527530dee7f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countChangeDamageSlider: 0
+  takingDamage: 0
+--- !u!114 &5579739778121716334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812432489111245860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 340797528563d474e8bdd2ab6614b782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
 --- !u!1 &2059396394074241505
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +425,7 @@ RectTransform:
   m_Father: {fileID: 2385397821380914802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

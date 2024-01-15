@@ -8,11 +8,11 @@ public class FungusSlotListHUD : MonoBehaviour
     [SerializeField] private FungusSlotHUD fungusSlotHUDPrefab;
     [SerializeField] private List<FungusSlotHUD> fungusSlotHUDList = new List<FungusSlotHUD>();
     public List<FungusSlotHUD> FungusSlotHUDList { get => fungusSlotHUDList; }
-    public void SetInit(List<FungusData> fungusDataList, List<KeyCode> inputSlot)
+    public void SetInit(List<FungusInfoReader> fungusInfoList, List<KeyCode> inputSlot)
     {
-        for (int i = 0; i < fungusDataList.Count; i++)
+        for (int i = 0; i < fungusInfoList.Count; i++)
         {
-            FungusData fungusData = fungusDataList[i];
+            FungusData fungusData = fungusInfoList[i].FungusData;
             FungusSlotHUD fungusSlotHUD = Instantiate(fungusSlotHUDPrefab, transform);
 
             fungusSlotHUD.SetHealthSliderInit(0, fungusData.fungusStats.maxHealth);

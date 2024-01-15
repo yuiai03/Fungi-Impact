@@ -3,8 +3,8 @@ public enum PoolType
 {
     None,
 
-    PlayerBullet,
-    PlayerExplosion,
+    FungusBullet,
+    Fungusxplosion,
     
     BossBullet,
     BossExplosion,

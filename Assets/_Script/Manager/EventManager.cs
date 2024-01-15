@@ -10,7 +10,7 @@ public class EventManager
     public delegate void OnUnPickFungus(int slotIndex, FungusPackedConfig config);
     public static event OnUnPickFungus onUnPickFungus;
 
-    public delegate void OnSwitchFungus(FungusData fungusData);
+    public delegate void OnSwitchFungus(FungusInfoReader oldFungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD);
     public static event OnSwitchFungus onSwitchFungus;
 
     public delegate void OnShowInfoBoss(BossSlot bossSlot, bool state);
@@ -22,6 +22,9 @@ public class EventManager
     public delegate void OnFungusDie();
     public static event OnFungusDie onFungusDie;
 
+    public delegate void OnCameraChangeTarget(Transform targer);
+    public static event OnCameraChangeTarget onCameraChangeTarget;
+
     public static void ActionOnPickFungus(int slotIndex, FungusPackedConfig config)
     {
         onPickFungus?.Invoke(slotIndex, config);
@@ -30,9 +33,9 @@ public class EventManager
     {
         onUnPickFungus?.Invoke(slotIndex, config);
     }
-    public static void ActionOnSwitchFungus(FungusData fungusData)
+    public static void ActionOnSwitchFungus(FungusInfoReader oldFungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD)
     {
-        onSwitchFungus?.Invoke(fungusData);
+        onSwitchFungus?.Invoke(oldFungusInfo, newFungusInfo, fungusCurrentStatusHUD);
     }
     public static void ActionOnShowInfoBoss(BossSlot bossSlot, bool state)
     {
@@ -41,10 +44,13 @@ public class EventManager
     public static void ActionOnSelectBoss(BossSlot bossSlot)
     {
         onSelectBoss?.Invoke(bossSlot);
-    }
-    
+    }   
     public static void ActionOnFungusDie()
     {
         onFungusDie?.Invoke();
+    }
+    public static void ActionOnCameraChangeTarget(Transform target)
+    {
+        onCameraChangeTarget?.Invoke(target);
     }
 }

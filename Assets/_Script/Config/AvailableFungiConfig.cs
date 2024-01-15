@@ -8,6 +8,7 @@ public class FungusPackedConfig
     public FungusNameType fungusNameType;
     public FungusConfig config;
     public FungusStats stats;
+    public FungusInfoReader fungusInfoReader;
 }
 [CreateAssetMenu(fileName = "New Available Fungi Config", menuName = "Config/Available Fungi Config")]
 public class AvailableFungiConfig : ScriptableObject

@@ -18,4 +18,5 @@ public class GameConfig
     public const float damageSliderChangeWaitTime = 1f;
 
     public const float moveYBossSlotDuration = 0.2f;
+
 }

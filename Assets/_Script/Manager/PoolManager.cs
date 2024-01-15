@@ -4,12 +4,10 @@ using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager : Singleton<PoolManager>
 {
-    public static PoolManager instance;
-
     [Header("Prefab")]
-    public TextPopUp textPopUpPrefab;
+    [SerializeField] private TextPopUp textPopUpPrefab;
 
     [Header("Holder")]
     [SerializeField] private GameObject ObjectPoolHolder;
@@ -23,15 +21,11 @@ public class PoolManager : MonoBehaviour
     [SerializeField] private GameObject textPopUpHolder;
 
     [Header("List Obj")]
-    [SerializeField] private List<PlayerBullet> playerBulletList;
+    [SerializeField] private List<FungusBullet> playerBulletList;
     [SerializeField] private List<BulletExplosion> playerExplosionList;
 
     [SerializeField] private List<BossBullet> bossBulletList;
     [SerializeField] private List<TextPopUp> textPopUpList;
-    public void Awake()
-    {
-        instance = this;
-    }
     private void Start()
     {
         SetUpObjEmpties();
@@ -43,6 +37,7 @@ public class PoolManager : MonoBehaviour
     void SetUpObjEmpties()
     {
         ObjectPoolHolder = new GameObject("ObjectPoolHolder");
+        ObjectPoolHolder.transform.SetParent(transform);
 
         playerBulletHolder = new GameObject("BulletHolder");
         playerBulletHolder.transform.SetParent(ObjectPoolHolder.transform);
@@ -65,9 +60,9 @@ public class PoolManager : MonoBehaviour
         {
             case PoolType.None:
                 return null;
-            case PoolType.PlayerBullet:
+            case PoolType.FungusBullet:
                 return playerBulletHolder;
-            case PoolType.PlayerExplosion:
+            case PoolType.Fungusxplosion:
                 return playerExplosionHolder;
             case PoolType.BossBullet:
                 return bossBulletHolder;
@@ -85,9 +80,9 @@ public class PoolManager : MonoBehaviour
         {
             case PoolType.None:
                 return null;
-            case PoolType.PlayerBullet:
+            case PoolType.FungusBullet:
                 return playerBulletList as List<T>;
-            case PoolType.PlayerExplosion:
+            case PoolType.Fungusxplosion:
                 return playerExplosionList as List<T>;
             case PoolType.BossBullet:
                 return bossBulletList as List<T>;
@@ -124,4 +119,8 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    public TextPopUp GetTextPopUp()
+    {
+        return textPopUpPrefab;
+    }
 }

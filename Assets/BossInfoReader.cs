@@ -5,32 +5,28 @@ using UnityEngine;
 
 public class BossInfoReader : MonoBehaviour
 {
-    public Transform target;
+    public FungusInfoReader targetInfo;
     [SerializeField] private SpriteRenderer model;
 
-    public Action<Transform> OnGetTarget;
 
     public BossCurrentStatusHUD currentStatusHUD;
     public BossData BossData { get => bossData; }
     [SerializeField] private BossData bossData;
 
 
-    public void GetData(BossData bossData, BossCurrentStatusHUD statusHUD, PlayerInfoReader playerInfo)
+    public void GetData(BossData bossData, BossCurrentStatusHUD statusHUD)
     {
         this.bossData = bossData;
         currentStatusHUD = statusHUD;
-
-        GetTarget(playerInfo.transform);
 
         GetModel(bossData.bossConfig.bossModelSprite);
 
         GetHUDInit();
     }
     void GetModel(Sprite sprite) => model.sprite = sprite;
-    void GetTarget(Transform target)
+    public void GetTarget(FungusInfoReader fungusInfo)
     {
-        this.target = target;
-        OnGetTarget?.Invoke(target);
+        targetInfo = fungusInfo;
     }
     void GetHUDInit()
     {

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button homeButton;
-    private ManagerRoot managerRoot => ManagerRoot.instance;
+    private ManagerRoot managerRoot => ManagerRoot.Instance;
     private void Awake()
     {
         homeButton.onClick.AddListener(OnHomeClick);

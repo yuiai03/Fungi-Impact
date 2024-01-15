@@ -12,7 +12,7 @@ public class HomeUI : MonoBehaviour
     [SerializeField] private BossList bossList;
 
     [SerializeField] private List<BgOutlineColor> bgOutlineColorList;
-    private ManagerRoot managerRoot => ManagerRoot.instance;
+    private ManagerRoot managerRoot => ManagerRoot.Instance;
     private void Awake()
     {
         returnButton.onClick.AddListener(OnReturnClick);

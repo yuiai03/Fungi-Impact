@@ -6,23 +6,15 @@ using UnityEngine;
 public class BossAttack : MonoBehaviour
 {
     [SerializeField] private BossBullet bulletPrefab;
-    public Transform target;
 
     private BossInfoReader bossInfo;
     private void Awake()
     {
         bossInfo = GetComponent<BossInfoReader>();
-        bossInfo.OnGetTarget += OnGetTarget;
     }
     private void OnDestroy()
     {
-        bossInfo.OnGetTarget -= OnGetTarget;
     }
-    private void OnGetTarget(Transform transform)
-    {
-        target = transform;
-    }
-
     private void Start()
     {
         StartCoroutine(Attack());
@@ -31,9 +23,12 @@ public class BossAttack : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2f);
-            BossBullet bullet = PoolManager.instance.SpawnObj(bulletPrefab, transform.position, PoolType.BossBullet);
-            bullet.target = target;
+            yield return new WaitForSeconds(1f);
+
+            while (bossInfo.targetInfo == null) yield return null;
+
+            BossBullet bullet = PoolManager.Instance.SpawnObj(bulletPrefab, transform.position, PoolType.BossBullet);
+            bullet.target = bossInfo.targetInfo.transform;
             bullet.MoveToTarget();
             bullet.GetBossInfo(bossInfo);
         }

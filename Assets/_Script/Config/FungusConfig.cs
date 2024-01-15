@@ -17,7 +17,10 @@ public class FungusConfig : ScriptableObject
     public Gradient gradientBullet;
     public Gradient gradientParticle;
 
+    public Material dissolveMaterial;
+
     public AnimatorController animatorController;
+    
     public Elemental fungusElemental;
 
 }

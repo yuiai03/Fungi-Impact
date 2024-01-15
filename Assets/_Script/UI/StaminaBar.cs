@@ -6,6 +6,13 @@ using UnityEngine.UI;
 public class StaminaBar : MonoBehaviour
 {
     public Slider staminaSlider;
+    public Transform target;
+    [SerializeField] private Vector3 offset;
+    private void Update()
+    {
+        if (target != null)
+            transform.position = target.position + offset;
+    }
     private void Awake()
     {
         staminaSlider = GetComponent<Slider>();

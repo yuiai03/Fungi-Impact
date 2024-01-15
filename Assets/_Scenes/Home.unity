@@ -670,6 +670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f14db9959b2416c4d81fcaff4fe01c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDontDestroy: 1
   actionFungusNameList: 
   actionBossNameType: 0
   transitionController: {fileID: 1453816662}

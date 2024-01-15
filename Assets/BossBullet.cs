@@ -10,6 +10,8 @@ public class BossBullet : MonoBehaviour
 
     private Rigidbody2D rb2d;
     private BossInfoReader bossInfo;
+    private PoolManager poolManager => PoolManager.Instance;
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -32,11 +34,13 @@ public class BossBullet : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<PlayerHealth>().TakeDamage(bossInfo.BossData.damage);
+            FungusController fungusController = collision.GetComponent<FungusController>();
+            if (fungusController.isDying) return;
 
+            fungusController.GetFungusHealth().TakeDamage(bossInfo.BossData.damage);
 
             Vector3 collisionPos = collision.transform.position;
-            TextPopUp textPopUp = PoolManager.instance.SpawnObj(PoolManager.instance.textPopUpPrefab, collisionPos, PoolType.TextPopUp);
+            TextPopUp textPopUp = poolManager.SpawnObj(poolManager.GetTextPopUp(), collisionPos, PoolType.TextPopUp);
             textPopUp.SetPopUpDamage(bossInfo.BossData.damage, bossInfo.BossData.bossConfig.bossColor);
         }
         gameObject.SetActive(false);

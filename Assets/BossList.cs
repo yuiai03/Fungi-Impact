@@ -9,17 +9,16 @@ public class BossList : MonoBehaviour
     [SerializeField] private BossSlot bossSlotPrefab;
     public List<BossSlot> bossSlotList = new List<BossSlot>();
 
-    private ManagerRoot managerRoot => ManagerRoot.instance;
+    private ManagerRoot managerRoot => ManagerRoot.Instance;
 
     private void Awake()
     {
+        EventManager.onShowInfoBoss += OnShowInfoBoss;
+        EventManager.onSelectBoss += OnSelectBoss;
     }
     private void Start()
     {
-        EventManager.onShowInfoBoss += OnShowInfoBoss;
-        EventManager.onSelectBoss += OnSelectBoss;
         Init();
-       
     }
     private void OnDestroy()
     {

@@ -50,7 +50,6 @@ MonoBehaviour:
   target: {fileID: 0}
   direction: {x: 0, y: 0}
   speed: 1
-  damage: 1000
 --- !u!50 &6529479421891381755
 Rigidbody2D:
   serializedVersion: 4

@@ -77,6 +77,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  dissolveMaterial: {fileID: 2100000, guid: 9edfc0f2e03fb9c408df8ecef4dd82c7, type: 2}
   animatorController: {fileID: 9100000, guid: 8766960658db7af42b054fb24bde18c0, type: 2}
   fungusElemental:
     elementalType: 3

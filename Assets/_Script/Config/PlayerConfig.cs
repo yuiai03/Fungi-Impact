@@ -6,9 +6,11 @@ public class PlayerConfig
 {
     public const float staminaBarRecoverySpeed = 50f;
     public const float staminaRecoverySpeed = 20f;
-    public const float staminaRecoveryWaitTime = 2f;
+    public const float staminaRecoveryWaitTime = 1.5f;
 
     public const float deactivateBulletExplosionTime = 2f;
 
-    public const float dyingWaitTime = 2f;
+    public const float dyingWaitTime = 3f;
+
+    public const float dashRecoveryWaitTime = 0.5f;
 }

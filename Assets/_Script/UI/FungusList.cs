@@ -7,7 +7,7 @@ public class FungusList : MonoBehaviour
     public FungusCard fungusCardPrefab;
     private TeamSetupUI teamSetupUI;
 
-    private ManagerRoot managerRoot => ManagerRoot.instance;
+    private ManagerRoot managerRoot => ManagerRoot.Instance;
     private void Awake()
     {
         teamSetupUI = transform.root.GetComponent<TeamSetupUI>();
