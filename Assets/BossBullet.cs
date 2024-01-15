@@ -39,7 +39,6 @@ public class BossBullet : MonoBehaviour
             TextPopUp textPopUp = PoolManager.instance.SpawnObj(PoolManager.instance.textPopUpPrefab, collisionPos, PoolType.TextPopUp);
             textPopUp.SetPopUpDamage(bossInfo.BossData.damage, bossInfo.BossData.bossConfig.bossColor);
         }
-        Debug.Log("Destroy Boss Bullet");
         gameObject.SetActive(false);
     }
 }

@@ -7,8 +7,11 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float countChangeDamageSlider;
     [SerializeField] private int takingDamage;
     private PlayerInfoReader playerInfo;
+    private PlayerController playerController;
+
     private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
         playerInfo = GetComponent<PlayerInfoReader>();
 
         EventManager.onSwitchFungus += OnSwitchFungus;
@@ -32,12 +35,14 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int value)
     {
         playerInfo.PlayerData.health -= value;
-
-        if (playerInfo.PlayerData.health <= 0) playerInfo.PlayerData.health = 0;
-
         playerInfo.playerCurrentHUD.SetCurrentHealthSlider(playerInfo.PlayerData.health);
         playerInfo.playerCurrentHUD.SetHealthText(playerInfo.PlayerData.health, playerInfo.PlayerData.maxHealth);
         takingDamage = value;
+
+        if (playerInfo.PlayerData.health <= 0)
+        {
+            FungusDie();         
+        }
     }
     void UpdateCurrentDamageSlider()
     {
@@ -78,5 +83,9 @@ public class PlayerHealth : MonoBehaviour
                 playerInfo.playerCurrentHUD.currentDamageSlider.value -= takingDamage * 2 * Time.deltaTime;
             }
         }
+    }
+    void FungusDie()
+    {
+        EventManager.ActionOnFungusDie();
     }
 }

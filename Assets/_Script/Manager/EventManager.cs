@@ -19,6 +19,9 @@ public class EventManager
     public delegate void OnSelectBoss(BossSlot bossSlot);
     public static event OnSelectBoss onSelectBoss;
 
+    public delegate void OnFungusDie();
+    public static event OnFungusDie onFungusDie;
+
     public static void ActionOnPickFungus(int slotIndex, FungusPackedConfig config)
     {
         onPickFungus?.Invoke(slotIndex, config);
@@ -38,5 +41,10 @@ public class EventManager
     public static void ActionOnSelectBoss(BossSlot bossSlot)
     {
         onSelectBoss?.Invoke(bossSlot);
+    }
+    
+    public static void ActionOnFungusDie()
+    {
+        onFungusDie?.Invoke();
     }
 }

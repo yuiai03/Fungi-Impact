@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
@@ -7,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     public bool isAttacking;
     public bool isDashing;
+    public bool isDying;
 
     [SerializeField] private Vector2 moveDirection;
     [SerializeField] private Vector2 lastDirection;
@@ -21,6 +23,20 @@ public class PlayerController : MonoBehaviour
     private PlayerInfoReader playerInfo;
     private CameraCollider cameraCollider => CameraCollider.instance;
     private GameplayController gameplayController => GameplayController.instance;
+
+    private Coroutine fungusDieCoroutine;
+    private void Awake()
+    {
+        EventManager.onFungusDie += OnFungusDie;
+    }
+    private void OnDestroy()
+    {
+        EventManager.onFungusDie += OnFungusDie;
+    }
+    void OnFungusDie()
+    {
+        fungusDieCoroutine = StartCoroutine(FungusDieCoroutine());
+    }
     private void Start()
     {
         animationEvent = GetComponentInChildren<AnimationEvent>();
@@ -31,6 +47,7 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
 
         SetAnimEvent();
+
     }
     private void Update()
     {
@@ -41,11 +58,16 @@ public class PlayerController : MonoBehaviour
     }
     void UpdateInput()
     {
+        if (isDying)
+        {
+            return;
+        }
         if (isAttacking)
         {
             rb2d.velocity = new Vector2(moveDirection.x, moveDirection.y);
             return;
         }
+        Debug.Log("Inputing");
         Move();
         Dash();
         Attack();
@@ -172,5 +194,39 @@ public class PlayerController : MonoBehaviour
     public void AttackingState(bool state)
     {
         isAttacking = state;
+    }
+
+    public IEnumerator FungusDieCoroutine()
+    {
+        DyingFungusState();
+
+        int fungusAliveIndex = gameplayController.GetFungusAliveIndex();
+        if (fungusAliveIndex >= 0)
+        {
+            yield return new WaitForSeconds(PlayerConfig.dyingWaitTime);
+            ResetFungusState();
+
+            gameplayController.SwitchFungus(fungusAliveIndex);
+        }
+        else
+        {
+            Debug.Log("Game over");
+        }
+    }
+    void DyingFungusState()
+    {
+        isDying = true;
+        playerInfo.PlayerData.health = 0;
+        moveDirection = Vector2.zero;
+        rb2d.velocity = moveDirection;
+        Debug.Log("Dying");
+    }
+    void ResetFungusState()
+    {
+        isDying = false;
+        isAttacking = false;
+        isDashing = false;
+
+        Debug.Log("Alive");
     }
 }

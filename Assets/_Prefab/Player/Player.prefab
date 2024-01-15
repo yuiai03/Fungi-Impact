@@ -201,18 +201,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb1f62d442792e24ba98c9f99f59f0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 4604024602589781887}
+  animator: {fileID: 3840864185406049693}
+  switchFungusEffect: {fileID: 790841724398744084}
+  shadowSwitchFungusEffect: {fileID: 7252820910029189489}
+  playerCurrentHUD: {fileID: 0}
   playerData:
     maxHealth: 0
     health: 0
     damage: 0
     lv: 0
+    moveSpeed: 0
+    dashTime: 0
+    dashForce: 0
+    dashStamina: 0
     fungusConfig: {fileID: 0}
     fungusStats: {fileID: 0}
-  playerConfig: {fileID: 0}
-  model: {fileID: 4604024602589781887}
-  animator: {fileID: 3840864185406049693}
-  switchFungusEffect: {fileID: 790841724398744084}
-  shadowSwitchFungusEffect: {fileID: 7252820910029189489}
 --- !u!114 &6441036539118840472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,14 +231,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAttacking: 0
   isDashing: 0
-  dashStamina: 20
-  dashingTime: 0.2
-  dashForce: 15
-  moveSpeed: 3
+  isDying: 0
   moveDirection: {x: 0, y: 0}
   lastDirection: {x: 0, y: 0}
   attackDirection: {x: 0, y: 0}
-  playerCurrentHUD: {fileID: 0}
 --- !u!114 &2711722794065485731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,8 +247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8274d558b6062b8429b068eae53a63fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStamina: 0
   maxStamina: 100
+  stamina: 0
   countRecoveryTime: 0
   staminaBar: {fileID: 3578279916176594043}
 --- !u!114 &5583787869078295526
@@ -276,9 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4169055b680d9498abd71d26733f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  countChangeDamageSlider: 0
   takingDamage: 0
-  playerCurrentHUD: {fileID: 0}
-  playerInfo: {fileID: 0}
 --- !u!114 &7612341718086445647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,9 +290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a187660f4838bc04eaf87fe5896fe03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  takingDamage: 0
-  playerCurrentHUD: {fileID: 0}
-  playerInfo: {fileID: 0}
 --- !u!1 &2059396394074241505
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +692,7 @@ SpriteRenderer:
   m_SortingLayerID: 415637829
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 106129308, guid: 984854ffa7d11d8449d2d4a272dcc299, type: 3}
+  m_Sprite: {fileID: 8567208255763837972, guid: d84236f26ad30684b88f634c7e60a85c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

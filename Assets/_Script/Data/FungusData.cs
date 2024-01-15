@@ -6,7 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class FungusData
 {
-
     public float maxHealth;
     public float health;
     
@@ -22,5 +21,6 @@ public class FungusData
 
     public FungusConfig fungusConfig;
     public FungusStats fungusStats;
+
 
 }

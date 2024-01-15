@@ -25,10 +25,14 @@ public class GameplayController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
     }
     public void Start()
     {
         Init();
+    }
+    private void OnDestroy()
+    {
     }
     public void Update()
     {
@@ -83,7 +87,7 @@ public class GameplayController : MonoBehaviour
     }
     public void SwitchFungus(int slotIndex)
     {
-        if (currentSlotIndex == slotIndex) return;
+        if (currentSlotIndex == slotIndex || fungusDataList[slotIndex].health == 0) return;
 
         FungusData fungusData = fungusDataList[slotIndex];
         currentFungusData = fungusData;
@@ -150,5 +154,17 @@ public class GameplayController : MonoBehaviour
             slot.SetSlotInteractRecoverySlider(value);
             slot.SetSlotInteractRecoveryTime(value);
         }
+    }
+    public int GetFungusAliveIndex()
+    {
+        for (int i = 0; i < fungusDataList.Count; i++)
+        {
+            FungusData fungusData = fungusDataList[i];
+            if(fungusData.health != 0)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }

@@ -10,4 +10,5 @@ public class PlayerConfig
 
     public const float deactivateBulletExplosionTime = 2f;
 
+    public const float dyingWaitTime = 2f;
 }
