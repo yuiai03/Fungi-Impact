@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public BossInfoReader BossInfo { get => bossInfo; }
+    private BossInfoReader bossInfo;
+    private BossCollider bossCollider;
+    private BossAttack bossAttack;
+    private BossHealth bossHealth;
+
+    private void Awake()
     {
-        
+        bossAttack = GetComponent<BossAttack>();
+        bossCollider = GetComponent<BossCollider>();
+        bossInfo = GetComponent<BossInfoReader>();
+        bossHealth = GetComponent<BossHealth>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public Transform Target()
     {
+        if (bossCollider.ColliderList().Length == 0) return null;
         
+        return bossCollider.ColliderList()[0].transform;
+
     }
 }

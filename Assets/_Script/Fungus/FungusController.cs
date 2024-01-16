@@ -10,7 +10,7 @@ public class FungusController : MonoBehaviour
     public bool isAttacking;
     public bool isDashing;
     public bool isDying;
-    [SerializeField] private float countRecoveryDashTime = 0;
+    public bool isDashCoolingDown;
 
     [SerializeField] private Vector2 moveDirection;
     [SerializeField] private Vector2 lastDirection;
@@ -22,12 +22,16 @@ public class FungusController : MonoBehaviour
     private FungusStamina fungusStamina;
     private FungusAttack fungusAttack;
     private AnimationEvent animationEvent;
+    private CapsuleCollider2D capsuleCollider2D;
 
     private FungusInfoReader fungusInfo;
     private CameraCollider cameraCollider => CameraCollider.instance;
     private GameplayManager gameplayController => GameplayManager.Instance;
+    private PlayerManager playerManager => PlayerManager.Instance;
 
     private Coroutine fungusDieCoroutine;
+    private Coroutine stopDashCoroutine;
+    private Coroutine dashCoolDownCoroutine;
     private void Awake()
     {
         EventManager.onFungusDie += OnFungusDie;
@@ -42,8 +46,11 @@ public class FungusController : MonoBehaviour
     }
     void OnFungusDie()
     {
-        if (gameObject.activeSelf) 
-        fungusDieCoroutine = StartCoroutine(FungusDieCoroutine());
+        if (gameObject.activeSelf)
+        {
+            if (fungusDieCoroutine != null) StopCoroutine(fungusDieCoroutine);
+            fungusDieCoroutine = StartCoroutine(FungusDieCoroutine());
+        }
     }
     private void Start()
     {
@@ -54,16 +61,13 @@ public class FungusController : MonoBehaviour
         fungusHealth = GetComponent<FungusHealth>();
         fungusInfo = GetComponent<FungusInfoReader>();
         rb2d = GetComponent<Rigidbody2D>();
-
+        capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         SetAnimEvent();
     }
     private void Update()
     {
         UpdateInput();
         UpdateAnimation();
-        UpdateRecoveryDashTime();
-
-        CheckState();
     }
     void UpdateInput()
     {
@@ -80,14 +84,6 @@ public class FungusController : MonoBehaviour
         Dash();
         Attack();
     }
-    void CheckState()
-    {
-        if (fungusStamina == null) return;
-
-        gameplayController.UpdateStaminaState();
-        gameplayController.UpdateStaminaBar();
-        gameplayController.UpdateStaminaBarState();
-    }
     void SetAnimEvent()
     {
         animationEvent.OnStartAnimEvent.AddListener(() => InteractSlotState(false));
@@ -99,6 +95,7 @@ public class FungusController : MonoBehaviour
     }
     void UpdateAnimation()
     {
+
         animator.SetFloat("MoveX", moveDirection.x);
         animator.SetFloat("MoveY", moveDirection.y);
 
@@ -110,6 +107,8 @@ public class FungusController : MonoBehaviour
 
         animator.SetFloat("MoveSpeed", moveDirection.magnitude);
         animator.SetBool("Move", moveDirection != Vector2.zero);
+
+
     }
     void Move()
     {
@@ -131,8 +130,6 @@ public class FungusController : MonoBehaviour
         bool pressDash = Input.GetMouseButtonDown(1);
         if (pressDash && CanDash())
         {
-            isDashing = true;
-            countRecoveryDashTime = 0;
             if (moveDirection == Vector2.zero)
             {
                 if(lastDirection.x == 0 && lastDirection.y == 0) lastDirection.y = -1;
@@ -141,17 +138,32 @@ public class FungusController : MonoBehaviour
             }
             rb2d.velocity = moveDirection.normalized * fungusInfo.FungusData.dashForce;
 
-            gameplayController.ConsumeStamina(fungusInfo.FungusData.dashStamina);
-            StartCoroutine(StopDash());
+            playerManager.ConsumeStamina(fungusInfo.FungusData.dashStamina);
+
+            if (stopDashCoroutine != null) StopCoroutine(stopDashCoroutine);
+            stopDashCoroutine = StartCoroutine(StopDashCoroutine());
         }
 
     }
-    IEnumerator StopDash()
+    IEnumerator StopDashCoroutine()
     {
+        isDashing = true;
+        InteractSlotState(false);
         yield return new WaitForSeconds(fungusInfo.FungusData.dashTime);
         isDashing = false;
+        InteractSlotState(true);
+        playerManager.UpdateStamina();
+
+        if (dashCoolDownCoroutine != null) StopCoroutine(dashCoolDownCoroutine);
+        dashCoolDownCoroutine = StartCoroutine(DashCoolDownCoroutine());
     }
 
+    IEnumerator DashCoolDownCoroutine()
+    {
+        isDashCoolingDown = true;
+        yield return new WaitForSeconds(PlayerConfig.dashCoolDown);
+        isDashCoolingDown = false;
+    }
     public void Attack()
     {
         bool pressAttack = Input.GetMouseButtonDown(0);
@@ -198,10 +210,12 @@ public class FungusController : MonoBehaviour
     bool CanAttack() => !isAttacking && !isDashing;
     bool CanDash()
     {
-        return gameplayController.GetCurrentStamina() >= fungusInfo.FungusData.dashStamina && 
-            !isDashing && !isAttacking && countRecoveryDashTime >= PlayerConfig.dashRecoveryWaitTime;
+        return  StaminaEnough() && !isDashing && !isAttacking && !isDashCoolingDown;
     }
-
+    bool StaminaEnough()
+    {
+        return playerManager.GetCurrentStamina() >= fungusInfo.FungusData.dashStamina;
+    }
     void OnSwitchFungus(FungusInfoReader oldFungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD)
     {
         GetNewPosition(oldFungusInfo.transform.position);
@@ -213,24 +227,20 @@ public class FungusController : MonoBehaviour
     }
     public void InteractSlotState(bool state)
     {
-        gameplayController.InteractSlotState(state);
+        playerManager.InteractSlotState(state);
     }
-    public void AttackingState(bool state)
-    {
-        isAttacking = state;
-    }
-
+    public void AttackingState(bool state) => isAttacking = state;
     public IEnumerator FungusDieCoroutine()
     {
         DyingFungusState();
 
-        int fungusAliveIndex = gameplayController.GetFungusAliveIndex();
+        int fungusAliveIndex = playerManager.GetFungusAliveIndex();
         if (fungusAliveIndex >= 0)
         {
             yield return new WaitForSeconds(PlayerConfig.dyingWaitTime);
             ResetFungusState();
 
-            gameplayController.SwitchFungus(fungusAliveIndex);
+            playerManager.SwitchFungus(fungusAliveIndex);
         }
         else
         {
@@ -243,20 +253,19 @@ public class FungusController : MonoBehaviour
         fungusInfo.FungusData.health = 0;
         moveDirection = Vector2.zero;
         rb2d.velocity = moveDirection;
+        capsuleCollider2D.enabled = false;
+        animator.SetBool("Die", isDying);
+
     }
     void ResetFungusState()
     {
         isDying = false;
         isAttacking = false;
         isDashing = false;
+        capsuleCollider2D.enabled = true;
     }
     public FungusHealth GetFungusHealth()
     {
         return fungusHealth;
-    }
-    void UpdateRecoveryDashTime()
-    {
-        if(!isDashing && countRecoveryDashTime < PlayerConfig.dashRecoveryWaitTime)
-        countRecoveryDashTime += Time.deltaTime;
     }
 }

@@ -40,7 +40,6 @@ public class ManagerRoot : Singleton<ManagerRoot>
     }
     IEnumerator ProgressTransitionToScene(string sceneName)
     {
-        Debug.Log("Scene Loading");
         yield return new WaitForSeconds(0.5f);
         var asyncOperator = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncOperator.isDone)

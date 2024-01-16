@@ -31,6 +31,8 @@ public class BossHealth : MonoBehaviour
     }
     void UpdateCurrentDamageSlider()
     {
+        if (bossInfo == null) return;
+
         float healthValue = bossInfo.currentStatusHUD.currentHealthSlider.value;
         float damageValue = bossInfo.currentStatusHUD.currentDamageSlider.value;
 

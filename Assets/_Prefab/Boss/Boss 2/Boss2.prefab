@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 888011471522299366}
   - component: {fileID: 3571035536493219082}
   - component: {fileID: 2487379171314821281}
+  - component: {fileID: -2050409084341763311}
   m_Layer: 6
   m_Name: Boss2
   m_TagString: Boss
@@ -124,6 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef247e616077857419ae55f72080db8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  countChangeDamageSlider: 0
+  takingDamage: 0
 --- !u!114 &3571035536493219082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,7 +140,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3559779094232262940, guid: 60d9b7f023fcb31428a5fa6f1a1b31bb, type: 3}
-  target: {fileID: 0}
 --- !u!114 &2487379171314821281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f62c19b0c1810f46999e3a2b329c997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  targetInfo: {fileID: 0}
   model: {fileID: 1787526881069929797}
   currentStatusHUD: {fileID: 0}
   bossData:
@@ -161,6 +163,23 @@ MonoBehaviour:
     moveSpeed: 0
     bossConfig: {fileID: 0}
     bossStats: {fileID: 0}
+--- !u!114 &-2050409084341763311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4079994705232845976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 203a72d3b4c3f874c89bfb4ff665b9f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderList: []
+  radius: 30
+  layerCheck:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7096569817789281474
 GameObject:
   m_ObjectHideFlags: 0

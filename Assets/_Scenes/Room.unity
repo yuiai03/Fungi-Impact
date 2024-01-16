@@ -6023,12 +6023,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734510289}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1466385607}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &734510291
 MonoBehaviour:
@@ -6983,6 +6983,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDontDestroy: 0
   textPopUpPrefab: {fileID: 7987332308055092709, guid: 40b7eb19a27788b458abab57535c1a2a, type: 3}
+  ObjectPoolHolder: {fileID: 0}
+  playerBulletHolder: {fileID: 0}
+  playerExplosionHolder: {fileID: 0}
+  bossBulletHolder: {fileID: 0}
+  bossExplosionHolder: {fileID: 0}
+  textPopUpHolder: {fileID: 0}
+  playerBulletList: []
+  playerExplosionList: []
+  bossBulletList: []
+  textPopUpList: []
 --- !u!4 &1381719966
 Transform:
   m_ObjectHideFlags: 0
@@ -6996,7 +7006,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1466385607}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1466385606
 GameObject:
@@ -7008,7 +7018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1466385607}
   m_Layer: 0
-  m_Name: MANAGER
+  m_Name: ---MANAGER----
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7026,11 +7036,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1481002067}
-  - {fileID: 1381719966}
-  - {fileID: 2018470013}
-  - {fileID: 734510290}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1481002066
@@ -7064,7 +7070,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 453773052}
-  m_Father: {fileID: 1466385607}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1481002068
 MonoBehaviour:
@@ -7079,7 +7085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDontDestroy: 0
-  bossInfo: {fileID: 0}
+  currentBossInfo: {fileID: 0}
   currentStatusHUD: {fileID: 2051358065}
   spawnPointList:
   - {fileID: 781332967}
@@ -10937,6 +10943,60 @@ Canvas:
   m_SortingLayerID: 415637829
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1882236613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1882236615}
+  - component: {fileID: 1882236614}
+  m_Layer: 0
+  m_Name: FungusManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1882236614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882236613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5086a8a4cf5160e489d4689e0bb3c1d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDontDestroy: 0
+  canInteractSlot: 1
+  fungusCurrentStatusHUD: {fileID: 1929879923}
+  fungusSlotListHUD: {fileID: 1021239435}
+  fungusStaminaBar: {fileID: 1851877387}
+  currentSlotIndex: -1
+  currentStamina: 0
+  currentFungusInfo: {fileID: 0}
+  fungusInfoList: []
+  inputSlotFungus: 31000000320000003300000034000000
+--- !u!4 &1882236615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882236613}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1900636386
 GameObject:
   m_ObjectHideFlags: 0
@@ -16055,19 +16115,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDontDestroy: 0
-  canInteractSlot: 1
-  needRecoveryInteractSlot: 0
-  countSwitchSlotRecoveryTime: 0
-  countRecoveryStaminaTime: 0
-  fungusCurrentStatusHUD: {fileID: 1929879923}
-  fungusSlotListHUD: {fileID: 1021239435}
-  fungusStaminaBar: {fileID: 1851877387}
-  currentSlotIndex: -1
-  maxStamina: 100
-  currentStamina: 0
-  currentFungusInfo: {fileID: 0}
-  fungusInfoList: []
-  inputSlotFungus: 31000000320000003300000034000000
 --- !u!4 &2018470013
 Transform:
   m_ObjectHideFlags: 0
@@ -16081,7 +16128,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1466385607}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2042787038
 GameObject:
@@ -16325,4 +16372,9 @@ SceneRoots:
   - {fileID: 801297007}
   - {fileID: 425830677}
   - {fileID: 1466385607}
+  - {fileID: 1481002067}
+  - {fileID: 1381719966}
+  - {fileID: 2018470013}
+  - {fileID: 734510290}
+  - {fileID: 1882236615}
   - {fileID: 766792184}

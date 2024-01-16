@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BossInfoReader : MonoBehaviour
 {
-    public FungusInfoReader targetInfo;
     [SerializeField] private SpriteRenderer model;
 
 
@@ -14,20 +13,22 @@ public class BossInfoReader : MonoBehaviour
     [SerializeField] private BossData bossData;
 
 
-    public void GetData(BossData bossData, BossCurrentStatusHUD statusHUD)
+    public void GetData(BossData bossData)
     {
         this.bossData = bossData;
-        currentStatusHUD = statusHUD;
 
         GetModel(bossData.bossConfig.bossModelSprite);
+    }
+
+    public void GetCurrentStatusHUD(BossCurrentStatusHUD statusHUD)
+    {
+        currentStatusHUD = statusHUD;
 
         GetHUDInit();
+
     }
+
     void GetModel(Sprite sprite) => model.sprite = sprite;
-    public void GetTarget(FungusInfoReader fungusInfo)
-    {
-        targetInfo = fungusInfo;
-    }
     void GetHUDInit()
     {
         currentStatusHUD.SetCurrentHealthSliderInit(0, bossData.maxHealth);

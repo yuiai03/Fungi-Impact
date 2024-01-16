@@ -230,6 +230,7 @@ MonoBehaviour:
   isAttacking: 0
   isDashing: 0
   isDying: 0
+  isDashCoolingDown: 0
   moveDirection: {x: 0, y: 0}
   lastDirection: {x: 0, y: 0}
   attackDirection: {x: 0, y: 0}
@@ -245,10 +246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8274d558b6062b8429b068eae53a63fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStamina: 100
-  stamina: 0
-  countRecoveryTime: 0
-  staminaBar: {fileID: 0}
 --- !u!114 &8362461189903557333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +339,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9b05384044743fb4c94faaa00155f73e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -384,7 +381,7 @@ Animator:
   m_GameObject: {fileID: 8559875891498196136}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c9ea95115788fdb4c819c0912bb131b8, type: 2}
+  m_Controller: {fileID: 9100000, guid: d03fc5fe8487614439dc9eb74bc76601, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

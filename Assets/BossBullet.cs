@@ -34,8 +34,10 @@ public class BossBullet : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
+
             FungusController fungusController = collision.GetComponent<FungusController>();
-            if (fungusController.isDying) return;
+
+            if (fungusController.isAttacking) return;
 
             fungusController.GetFungusHealth().TakeDamage(bossInfo.BossData.damage);
 

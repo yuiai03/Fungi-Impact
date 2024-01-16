@@ -8,6 +8,10 @@ public class StaminaBar : MonoBehaviour
     public Slider staminaSlider;
     public Transform target;
     [SerializeField] private Vector3 offset;
+    private void Start()
+    {
+        StaminaBarState(false);
+    }
     private void Update()
     {
         if (target != null)
@@ -27,5 +31,5 @@ public class StaminaBar : MonoBehaviour
     {
         staminaSlider.value = currentValue;
     }
-
+    public void StaminaBarState(bool state) => gameObject.SetActive(state); 
 }
