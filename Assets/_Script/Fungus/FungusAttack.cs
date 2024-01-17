@@ -25,7 +25,7 @@ public class FungusAttack : MonoBehaviour
         {
             var config = fungusInfo.FungusData.fungusConfig;
             bullet.target = cameraCollider.GetTargetTransform();
-            bullet.direction = fungusController.SetDirectionAttackWithOutTarget();
+            bullet.direction = fungusController.DirectionAttackWithOutTarget();
             bullet.GetConfig(config.fungusColor, config.gradientParticle, config.gradientBullet);
             bullet.MoveToTarget();
             bullet.GetPlayerInfo(fungusInfo);

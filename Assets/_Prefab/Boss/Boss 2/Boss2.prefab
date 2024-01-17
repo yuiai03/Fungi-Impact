@@ -152,7 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f62c19b0c1810f46999e3a2b329c997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetInfo: {fileID: 0}
   model: {fileID: 1787526881069929797}
   currentStatusHUD: {fileID: 0}
   bossData:
@@ -179,7 +178,7 @@ MonoBehaviour:
   radius: 30
   layerCheck:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
 --- !u!1 &7096569817789281474
 GameObject:
   m_ObjectHideFlags: 0

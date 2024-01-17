@@ -8,6 +8,12 @@ public class AnimationEvent : MonoBehaviour
     [SerializeField] private bool eventCalled;
     public UnityEvent OnStartAnimEvent;
     public UnityEvent OnActionAnimEvent;
+
+    private FungusInfoReader infoReader;
+    private void Awake()
+    {
+        infoReader = GetComponentInParent<FungusInfoReader>();
+    }
     public void AttackEvent()
     {
         if (!eventCalled) return;

@@ -6,6 +6,7 @@ public class GameConfig
 {
     public const float fadeSlotAlpha = 0.5f;
     public const float showSlotAlpha = 1f;
+    public const float inactiveSlotAlpha = 0.2f;
 
     public const float unChosenSlotAlpha = 0.1f;
     public const float choseSlotAlpha = 1f;

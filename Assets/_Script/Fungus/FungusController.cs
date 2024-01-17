@@ -9,12 +9,16 @@ public class FungusController : MonoBehaviour
 {
     public bool isAttacking;
     public bool isDashing;
+    public bool isDied;
     public bool isDying;
     public bool isDashCoolingDown;
 
-    [SerializeField] private Vector2 moveDirection;
-    [SerializeField] private Vector2 lastDirection;
-    [SerializeField] private Vector2 attackDirection;
+    public Vector2 MoveDirection { get => moveDirection; }
+    private Vector2 moveDirection;
+    public Vector2 LastDirection { get => lastDirection; }
+    private Vector2 lastDirection;
+    public Vector2 AttackDirection { get => attackDirection; }
+    private Vector2 attackDirection;
 
     private Animator animator;
     private Rigidbody2D rb2d;
@@ -62,6 +66,7 @@ public class FungusController : MonoBehaviour
         fungusInfo = GetComponent<FungusInfoReader>();
         rb2d = GetComponent<Rigidbody2D>();
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+
         SetAnimEvent();
     }
     private void Update()
@@ -71,7 +76,7 @@ public class FungusController : MonoBehaviour
     }
     void UpdateInput()
     {
-        if (isDying)
+        if (isDying || isDied)
         {
             return;
         }
@@ -89,8 +94,8 @@ public class FungusController : MonoBehaviour
         animationEvent.OnStartAnimEvent.AddListener(() => InteractSlotState(false));
         animationEvent.OnStartAnimEvent.AddListener(() => AttackingState(true));
 
-        animationEvent.OnActionAnimEvent.AddListener(() => InteractSlotState(true));
         animationEvent.OnActionAnimEvent.AddListener(() => AttackingState(false));
+        animationEvent.OnActionAnimEvent.AddListener(() => InteractSlotState(true));
         animationEvent.OnActionAnimEvent.AddListener(() => fungusAttack.AttackAction());
     }
     void UpdateAnimation()
@@ -190,7 +195,7 @@ public class FungusController : MonoBehaviour
             animator.SetTrigger("Attack");
         }
     }
-    public Vector3 SetDirectionAttackWithOutTarget()
+    public Vector3 DirectionAttackWithOutTarget()
     {
         Vector3 direction;
         if (lastDirection.x == 0 && lastDirection.y == 0) direction = new Vector2(0, -1);
@@ -203,9 +208,9 @@ public class FungusController : MonoBehaviour
         return direction;
     }
 
-    void SetMoveDirection(Vector2 direction) => moveDirection = direction;
-    void SetLastDirection(Vector2 direction) => lastDirection = direction;
-    void SetAttackDirection(Vector2 direction) => attackDirection = direction;
+    public void SetMoveDirection(Vector2 direction) => moveDirection = direction;
+    public void SetLastDirection(Vector2 direction) => lastDirection = direction;
+    public void SetAttackDirection(Vector2 direction) => attackDirection = direction;
     bool CanMove() => !isDashing;
     bool CanAttack() => !isAttacking && !isDashing;
     bool CanDash()
@@ -227,18 +232,24 @@ public class FungusController : MonoBehaviour
     }
     public void InteractSlotState(bool state)
     {
+        if (playerManager.IsRecoveringInteractSlot()) return;
+            
         playerManager.InteractSlotState(state);
     }
     public void AttackingState(bool state) => isAttacking = state;
     public IEnumerator FungusDieCoroutine()
     {
+        DyingState(true);
         DyingFungusState();
 
         int fungusAliveIndex = playerManager.GetFungusAliveIndex();
         if (fungusAliveIndex >= 0)
         {
             yield return new WaitForSeconds(PlayerConfig.dyingWaitTime);
-            ResetFungusState();
+
+            DyingState(false);
+
+            DieState(true);
 
             playerManager.SwitchFungus(fungusAliveIndex);
         }
@@ -247,25 +258,40 @@ public class FungusController : MonoBehaviour
             Debug.Log("Game over");
         }
     }
+    void DyingState(bool state) => isDying = state;
     void DyingFungusState()
     {
-        isDying = true;
-        fungusInfo.FungusData.health = 0;
-        moveDirection = Vector2.zero;
+       
+        SetMoveDirection(Vector2.zero);
         rb2d.velocity = moveDirection;
+        
         capsuleCollider2D.enabled = false;
+        
         animator.SetBool("Die", isDying);
 
     }
     void ResetFungusState()
     {
         isDying = false;
-        isAttacking = false;
         isDashing = false;
         capsuleCollider2D.enabled = true;
+
+        DieState(false);
     }
     public FungusHealth GetFungusHealth()
     {
         return fungusHealth;
+    }
+    public void DieState(bool state)
+    {
+        isDashing = true;
+    }
+    public bool IsDying()
+    {
+        return isDying;
+    }
+    public bool IsAttacking()
+    {
+        return isAttacking;
     }
 }

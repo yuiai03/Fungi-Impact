@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class FungusSlotHUD : MonoBehaviour
 {
+    public FungusData fungusData;
+    
     [Header("Slider")]
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Slider damageSlider;
@@ -77,5 +79,9 @@ public class FungusSlotHUD : MonoBehaviour
     public void SetSlotInteractRecoveryTime(float value)
     {
         slotInteractRecoveryText.text = value.ToString("F1");
+    }
+    public bool CanActive()
+    {
+        return fungusData.health != 0;
     }
 }

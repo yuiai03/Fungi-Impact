@@ -13,6 +13,11 @@ public class FungusInfoReader : MonoBehaviour
     [SerializeField] private FungusData fungusData;
     public FungusData FungusData { get => fungusData; }
 
+    public FungusController FungusController { get; private set; }
+    private void Awake()
+    {
+        FungusController = GetComponent<FungusController>();
+    }
     public void GetData(FungusData data)
     {
         fungusData = data;

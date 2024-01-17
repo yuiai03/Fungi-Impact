@@ -33,6 +33,7 @@ public class FungusHealth : MonoBehaviour
         fungusCurrentStatusHUD.SetCurrentHealthSlider(fungusData.health);
         fungusCurrentStatusHUD.SetCurrentDamageSlider(fungusData.health);
         fungusCurrentStatusHUD.SetHealthText(fungusData.health, fungusData.maxHealth);
+        fungusCurrentStatusHUD.SetLvText(fungusData.lv);
     }
     public void TakeDamage(int value)
     {
@@ -43,6 +44,7 @@ public class FungusHealth : MonoBehaviour
 
         if (fungusInfo.FungusData.health <= 0)
         {
+            fungusInfo.FungusData.health = 0;
             FungusDie();         
         }
     }
