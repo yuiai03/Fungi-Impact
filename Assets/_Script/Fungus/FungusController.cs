@@ -31,7 +31,7 @@ public class FungusController : MonoBehaviour
     private FungusInfoReader fungusInfo;
     private CameraCollider cameraCollider => CameraCollider.instance;
     private GameplayManager gameplayController => GameplayManager.Instance;
-    private PlayerManager playerManager => PlayerManager.Instance;
+    private FungusManager playerManager => FungusManager.Instance;
 
     private Coroutine fungusDieCoroutine;
     private Coroutine stopDashCoroutine;

@@ -9,9 +9,9 @@ public class FungusSlotHUD : MonoBehaviour
     public FungusData fungusData;
     
     [Header("Slider")]
-    [SerializeField] private Slider healthSlider;
-    [SerializeField] private Slider damageSlider;
-    [SerializeField] private Slider slotInteractRecoveryBar;
+    public Slider healthSlider;
+    public Slider damageSlider;
+    public Slider slotInteractRecoveryBar;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI inputSlotText;

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class FungusHealth : MonoBehaviour
 {
-    [SerializeField] private float countChangeDamageSlider;
     [SerializeField] private int takingDamage;
 
     private FungusInfoReader fungusInfo;
     private FungusCurrentStatusHUD fungusCurrentStatusHUD;
+
+    private Coroutine updateCurrentDamageSliderCoroutine;
+    private Coroutine updateDamageSlotSliderCoroutine;
     private void Awake()
     {
         fungusInfo = GetComponent<FungusInfoReader>();
@@ -21,7 +23,6 @@ public class FungusHealth : MonoBehaviour
     }
     private void Update()
     {
-        UpdateCurrentDamageSlider();
     }
     void OnSwitchFungus(FungusInfoReader oldFungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD)
     {
@@ -34,13 +35,23 @@ public class FungusHealth : MonoBehaviour
         fungusCurrentStatusHUD.SetCurrentDamageSlider(fungusData.health);
         fungusCurrentStatusHUD.SetHealthText(fungusData.health, fungusData.maxHealth);
         fungusCurrentStatusHUD.SetLvText(fungusData.lv);
+
     }
     public void TakeDamage(int value)
     {
         fungusInfo.FungusData.health -= value;
         fungusCurrentStatusHUD.SetCurrentHealthSlider(fungusInfo.FungusData.health);
         fungusCurrentStatusHUD.SetHealthText(fungusInfo.FungusData.health, fungusInfo.FungusData.maxHealth);
+
+        fungusInfo.fungusSlotHUD.SetHealthSlider(fungusInfo.FungusData.health);
+
         takingDamage = value;
+
+        if (updateCurrentDamageSliderCoroutine != null) StopCoroutine(updateCurrentDamageSliderCoroutine);
+        StartCoroutine(UpdateCurrentDamageSliderCoroutine());
+
+        if (updateDamageSlotSliderCoroutine != null) StopCoroutine(updateDamageSlotSliderCoroutine);
+        StartCoroutine(UpdateDamageSlotSliderCoroutine());
 
         if (fungusInfo.FungusData.health <= 0)
         {
@@ -48,45 +59,32 @@ public class FungusHealth : MonoBehaviour
             FungusDie();         
         }
     }
-    void UpdateCurrentDamageSlider()
+    IEnumerator UpdateCurrentDamageSliderCoroutine()
     {
-        if (fungusCurrentStatusHUD == null) return;
         float healthValue = fungusCurrentStatusHUD.currentHealthSlider.value;
         float damageValue = fungusCurrentStatusHUD.currentDamageSlider.value;
 
+        yield return new WaitForSeconds(GameConfig.damageSliderChangeWaitTime);
 
-        if (takingDamage == 0)
+        while (Mathf.RoundToInt(healthValue) < Mathf.RoundToInt(damageValue))
         {
-            countChangeDamageSlider = 0;
-            return;
+            fungusCurrentStatusHUD.currentDamageSlider.value -= takingDamage * 2 * Time.deltaTime;
+            yield return null;
         }
-
-        if (Mathf.RoundToInt(healthValue) > Mathf.RoundToInt(damageValue))
-        {
-            ChangeCurrentDamageValue(true);
-        }
-        else if(Mathf.RoundToInt(healthValue) < Mathf.RoundToInt(damageValue))
-        {
-            ChangeCurrentDamageValue(false);
-        }
-        else
-        {
-            takingDamage = 0;
-        }
+        
     }
-    void ChangeCurrentDamageValue(bool increase)
+
+    IEnumerator UpdateDamageSlotSliderCoroutine()
     {
-        countChangeDamageSlider += Time.deltaTime;
-        if(countChangeDamageSlider >= GameConfig.damageSliderChangeWaitTime)
+        float healthValue = fungusInfo.fungusSlotHUD.healthSlider.value;
+        float damageValue = fungusInfo.fungusSlotHUD.damageSlider.value;
+
+        yield return new WaitForSeconds(GameConfig.damageSliderChangeWaitTime);
+
+        while (Mathf.RoundToInt(healthValue) < Mathf.RoundToInt(damageValue))
         {
-            if (increase)
-            {
-                fungusCurrentStatusHUD.currentDamageSlider.value = fungusInfo.FungusData.health;
-            }
-            else
-            {
-                fungusCurrentStatusHUD.currentDamageSlider.value -= takingDamage * 2 * Time.deltaTime;
-            }
+            fungusInfo.fungusSlotHUD.damageSlider.value -= takingDamage * 2 * Time.deltaTime;
+            yield return null;
         }
     }
     void FungusDie()

@@ -27,6 +27,8 @@ public class FungusSlotListHUD : MonoBehaviour
             fungusSlotHUD.SetChoseBgColor(fungusData.fungusConfig.fungusColor, GameConfig.unChosenSlotAlpha);
 
             fungusSlotHUDList.Add(fungusSlotHUD);
+
+            fungusInfoList[i].fungusSlotHUD = fungusSlotHUD;
         }
     }
     public void SetSlotSelect(int index)

@@ -12,7 +12,7 @@ public class FungusInfoReader : MonoBehaviour
     [Header("Data")]
     [SerializeField] private FungusData fungusData;
     public FungusData FungusData { get => fungusData; }
-
+    public FungusSlotHUD fungusSlotHUD;
     public FungusController FungusController { get; private set; }
     private void Awake()
     {

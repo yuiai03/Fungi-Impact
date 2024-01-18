@@ -505,7 +505,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_SizeDelta: {x: 360, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7344954375632780246
 CanvasRenderer:
@@ -527,6 +527,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df2009133591f14b8fc7bf0db13d637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fungusData:
+    maxHealth: 0
+    health: 0
+    damage: 0
+    lv: 0
+    moveSpeed: 0
+    dashTime: 0
+    dashForce: 0
+    dashStamina: 0
+    fungusConfig: {fileID: 0}
+    fungusStats: {fileID: 0}
   healthSlider: {fileID: 2112457207230498120}
   damageSlider: {fileID: 7182798716646326114}
   slotInteractRecoveryBar: {fileID: 1290314400010313378}

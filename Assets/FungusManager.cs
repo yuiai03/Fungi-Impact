@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EventManager;
 
-public class PlayerManager : Singleton<PlayerManager>
+public class FungusManager : Singleton<FungusManager>
 {
     [SerializeField] private bool canInteractSlot = true;
     [SerializeField] private bool isRecoveringInteractSlot = false;
@@ -193,6 +193,12 @@ public class PlayerManager : Singleton<PlayerManager>
                 slot.SetSlotInteractRecoveryState(state);
                 slot.SetSlotInteractRecoverySlider(value);
                 slot.SetSlotInteractRecoveryTime(value);
+            }
+            else
+            {
+                slot.SetSlotInteractRecoveryState(false);
+                slot.SetSlotInteractRecoverySlider(0);
+                slot.SetSlotInteractRecoveryTime(0);
             }
         }
     }
