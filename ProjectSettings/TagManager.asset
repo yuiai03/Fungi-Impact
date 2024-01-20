@@ -5,8 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Boss
-  - PlayerBullet
   - BossBullet
+  - Wall
+  - Fungus
+  - FungusBullet
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - Boss
   - 
   - 
-  - Player
-  - 
+  - Fungus
+  - Environment
   - 
   - 
   - 

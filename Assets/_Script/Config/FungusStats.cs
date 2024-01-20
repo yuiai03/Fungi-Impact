@@ -9,7 +9,7 @@ public class FungusStats : ScriptableObject
 
     public float maxHealth = 10000;
 
-    public int damage = 10000;
+    public int atk = 10000;
 
     public int lv = 1;
 
@@ -18,4 +18,8 @@ public class FungusStats : ScriptableObject
     public float dashTime = 0.2f;
     public float dashForce = 15f;
     public int dashStamina = 20;
+
+    public float critRate = 5f;
+    public float critDamage = 50f;
+    public int elementalMastery = 0;
 }

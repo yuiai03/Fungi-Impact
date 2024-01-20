@@ -10,20 +10,12 @@ public class FungusLv : MonoBehaviour
     {
         fungusInfo = GetComponent<FungusInfoReader>();
 
-        EventManager.onSwitchFungus += OnSwitchFungus;
     }
     private void OnDestroy()
     {
-        EventManager.onSwitchFungus -= OnSwitchFungus;
     }
     private void Update()
     {
 
-    }
-    void OnSwitchFungus(FungusInfoReader oldDungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD)
-    {
-        this.fungusCurrentStatusHUD = fungusCurrentStatusHUD;
-
-        this.fungusCurrentStatusHUD.SetLvText(newFungusInfo.FungusData.lv);
     }
 }

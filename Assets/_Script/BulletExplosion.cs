@@ -8,6 +8,7 @@ public class BulletExplosion : MonoBehaviour
     [SerializeField] private ParticleSystem shadowEffect;
     [SerializeField] private ParticleSystem dropEffect;
 
+    private Coroutine setupDeactivateCoroutine;
     public void GetParticleGradient(Gradient explosionGradient, Gradient dropGradient)
     {
         var explosionColor = explosionEffect.colorOverLifetime;
@@ -22,9 +23,10 @@ public class BulletExplosion : MonoBehaviour
     }
     private void OnEnable()
     {
-        StartCoroutine(SetupDeactivate());
+        if (setupDeactivateCoroutine != null) StopCoroutine(setupDeactivateCoroutine);
+        setupDeactivateCoroutine = StartCoroutine(SetupDeactivateCoroutine());
     }
-    IEnumerator SetupDeactivate()
+    IEnumerator SetupDeactivateCoroutine()
     {
         yield return new WaitForSeconds(PlayerConfig.deactivateBulletExplosionTime);
         gameObject.SetActive(false);

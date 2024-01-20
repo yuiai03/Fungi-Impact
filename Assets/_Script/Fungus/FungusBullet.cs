@@ -6,30 +6,44 @@ using Color = UnityEngine.Color;
 
 public class FungusBullet : MonoBehaviour
 {
-    [SerializeField] private float speed = 10;
+    #region Variables
     [SerializeField] private BulletExplosion bulletExplosionPrefab;
 
-    public Transform target;
-    public Vector3 direction;
+    [SerializeField] private float speed = 10;
+    public Transform Target { get; set; }
+    public Vector3 Direction { get; set; }
 
     private Rigidbody2D rb2d;
     private TrailRenderer trailRenderer;
     private SpriteRenderer spriteRenderer;
     private Gradient gradientParticle;
     private Gradient gradientBullet;
+    private TriggerDetection triggerDetection;
 
     private FungusInfoReader fungusInfo;
     private PoolManager poolManager => PoolManager.Instance;
+    #endregion
     private void Awake()
     {
+        triggerDetection = GetComponent<TriggerDetection>();
+        rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         trailRenderer = GetComponentInChildren<TrailRenderer>();
-        rb2d = GetComponent<Rigidbody2D>();
+
+        _ListenEvents();
+    }
+
+    void _ListenEvents()
+    {
+        triggerDetection.detectionEnterEvent.AddListener((GameObject obj) => TriggerDetection(obj));
+
     }
     private void OnEnable()
     {
         trailRenderer.Clear();
     }
+
+    #region Get Set Reference
     public void GetPlayerInfo(FungusInfoReader playerInfo)
     {
         this.fungusInfo = playerInfo;
@@ -42,34 +56,36 @@ public class FungusBullet : MonoBehaviour
         spriteRenderer.color = color;
         trailRenderer.colorGradient = gBullet;
     }
+    #endregion
+
     public void MoveToTarget()
     {
-        if (target != null)
+        if (Target != null)
         {
-            Vector3 targetPos = target.transform.position;
-            direction = (targetPos - transform.position).normalized;
+            Vector3 targetPos = Target.transform.position;
+            Direction = (targetPos - transform.position).normalized;
         }
-        rb2d.velocity = direction * speed;
+        rb2d.velocity = Direction * speed;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+
+    public void TriggerDetection(GameObject @object)
     {
-
-        if (collision.CompareTag("Player") || collision.CompareTag("PlayerBullet") || collision.CompareTag("BossBullet")) return;
-
-        if (collision.CompareTag("Boss"))
+        if (@object.GetComponent<BossHealth>())
         {
-            collision.GetComponent<BossController>();
-            Vector3 collisionPos = collision.transform.position;
+            Vector3 collisionPos = @object.transform.position;
 
-            collision.GetComponent<BossHealth>().TakeDamage(fungusInfo.FungusData.damage);
+            @object.GetComponent<BossHealth>().TakeDamage(fungusInfo.FungusData.atk);
 
-            TextPopUp textPopUp = poolManager.SpawnObj(poolManager.GetTextPopUp(), collisionPos, PoolType.TextPopUp);
-            textPopUp.SetPopUpDamage(fungusInfo.FungusData.damage, fungusInfo.FungusData.fungusConfig.fungusColor);
-
+            TextPopUp textPopUp;
+            textPopUp = poolManager.SpawnObj(poolManager.GetTextPopUp(), collisionPos, PoolType.TextPopUp);
+            textPopUp.SetPopUpDamage(fungusInfo.FungusData.atk, fungusInfo.FungusData.fungusConfig.fungusColor);
         }
+
         gameObject.SetActive(false);
-        
-        BulletExplosion bulletExplosion = poolManager.SpawnObj(bulletExplosionPrefab, transform.position, PoolType.Fungusxplosion);
+
+        BulletExplosion bulletExplosion;
+        bulletExplosion = poolManager.SpawnObj(bulletExplosionPrefab, transform.position, PoolType.Fungusxplosion);
         bulletExplosion.GetParticleGradient(gradientParticle, gradientBullet);
     }
 }

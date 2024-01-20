@@ -28,7 +28,9 @@ public class FungusSlotListHUD : MonoBehaviour
 
             fungusSlotHUDList.Add(fungusSlotHUD);
 
-            fungusInfoList[i].fungusSlotHUD = fungusSlotHUD;
+            //Add Event
+            fungusInfoList[i].FungusController.FungusHealth.OnTakeDamageEvent += fungusSlotHUD.OnTakeDamage;
+            fungusInfoList[i].FungusData.OnHealthChangeEvent += fungusSlotHUD.OnHealthChange;
         }
     }
     public void SetSlotSelect(int index)
@@ -36,7 +38,7 @@ public class FungusSlotListHUD : MonoBehaviour
         for (int i = 0; i < fungusSlotHUDList.Count; i++)
         {
             var fungusSlot = fungusSlotHUDList[i];
-            Color color = fungusSlot.GetChoseBgColor();
+            Color color = fungusSlot.ChoseBgColor();
 
             if (i == index) fungusSlot.SetChoseBgColor(color, GameConfig.choseSlotAlpha);
             else fungusSlot.SetChoseBgColor(color, GameConfig.unChosenSlotAlpha);

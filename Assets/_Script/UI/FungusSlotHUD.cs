@@ -6,26 +6,27 @@ using UnityEngine.UI;
 
 public class FungusSlotHUD : MonoBehaviour
 {
-    public FungusData fungusData;
-    
-    [Header("Slider")]
-    public Slider healthSlider;
-    public Slider damageSlider;
-    public Slider slotInteractRecoveryBar;
+    public bool CanActive => fungusData.health != 0;
 
-    [Header("Text")]
+    public FungusData fungusData;
+    [SerializeField] private int takingDamage;
+
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider damageSlider;
+    [SerializeField] private Slider slotInteractRecoveryBar;
+
     [SerializeField] private TextMeshProUGUI inputSlotText;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI slotInteractRecoveryText;
-
-    [Header("Image")]
     [SerializeField] private Image avatarImage;
 
-    [Header("Obj")]
     [SerializeField] private GameObject slotInteractRecoveryObj;
 
     private Image choseBgImage;
     private CanvasGroup canvasGroup;
+
+    private Coroutine updateDamageSlotSliderCoroutine;
+
     private void Awake()
     {
         choseBgImage = GetComponentInChildren<Image>();
@@ -35,6 +36,38 @@ public class FungusSlotHUD : MonoBehaviour
     {
         SetSlotInteractRecoverySliderInit(0, GameConfig.switchSlotRecoveryTime);
     }
+
+    public void OnTakeDamage(int value)
+    {
+        this.takingDamage = value;
+        if (updateDamageSlotSliderCoroutine != null) StopCoroutine(updateDamageSlotSliderCoroutine);
+        updateDamageSlotSliderCoroutine = StartCoroutine(UpdateDamageSlotSliderCoroutine());
+    }
+
+    public void OnHealthChange(float health, float maxHealth)
+    {
+        SetHealthSlider(health);
+    }
+
+
+    IEnumerator UpdateDamageSlotSliderCoroutine()
+    {
+        float healthValue = healthSlider.value;
+        float damageValue = damageSlider.value;
+
+        yield return new WaitForSeconds(GameConfig.damageSliderChangeWaitTime);
+
+        float counter = damageValue;
+        while (Mathf.RoundToInt(healthValue) < Mathf.RoundToInt(damageValue))
+        {
+            counter -= takingDamage * 2 * Time.deltaTime;
+            SetDamageSlider(counter);
+            yield return null;
+        }
+    }
+
+
+    #region Get Set Reference
     public void SetHealthSliderInit(float minValue, float maxValue)
     {
         healthSlider.minValue = minValue;
@@ -51,7 +84,9 @@ public class FungusSlotHUD : MonoBehaviour
         slotInteractRecoveryBar.maxValue = maxValue;
     }
     public void SetHealthSlider(float value) => healthSlider.value = value;
+
     public void SetSlotInteractRecoverySlider(float value) => slotInteractRecoveryBar.value = value;
+
     public void SetDamageSlider(float value) => damageSlider.value = value;
     
     public void SetName(string name) => nameText.text = name;
@@ -72,16 +107,15 @@ public class FungusSlotHUD : MonoBehaviour
         newColor.a = alpha;
         choseBgImage.color = newColor;
     }
-    public Color GetChoseBgColor()
-    {
-        return choseBgImage.color;
-    }
+
     public void SetSlotInteractRecoveryTime(float value)
     {
         slotInteractRecoveryText.text = value.ToString("F1");
     }
-    public bool CanActive()
-    {
-        return fungusData.health != 0;
-    }
+    #endregion
+
+    public Color ChoseBgColor() => choseBgImage.color;
+
+
+
 }

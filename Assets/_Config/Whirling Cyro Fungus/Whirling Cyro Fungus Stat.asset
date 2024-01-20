@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5702be8634400438d6dce4c23f05c1, type: 3}
   m_Name: Whirling Cyro Fungus Stat
   m_EditorClassIdentifier: 
-  fungusHealth: 10000
-  fungusDamage: 10000
+  maxStamina: 100
+  maxHealth: 10000
+  damage: 2000
+  lv: 1
+  moveSpeed: 3
+  dashTime: 0.2
+  dashForce: 15
+  dashStamina: 20

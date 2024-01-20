@@ -240,7 +240,7 @@ RectTransform:
   m_Father: {fileID: 1851877385}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 254857026}
   - component: {fileID: 254857025}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -404,7 +404,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 23
+  m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -5542,6 +5542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efcfdbe09d80e1c4ca9cc08c51b853ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDontDestroy: 0
   checkArea: {x: 0, y: 0}
   layerMask:
     serializedVersion: 2
@@ -6181,8 +6182,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1865752274}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &801393759
@@ -6859,6 +6859,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1095927654}
   m_CullTransparentMesh: 1
+--- !u!1 &1160165613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1160165614}
+  - component: {fileID: 1160165615}
+  m_Layer: 5
+  m_Name: FungusStaminaBar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1160165614
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160165613}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1851877385}
+  m_Father: {fileID: 1865752274}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1160165615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160165613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fac1349deb417438ec64e0b592a1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  offset: {x: 0.7, y: -0.2, z: 0}
+  staminaSlider: {fileID: 1851877388}
 --- !u!1 &1191635089
 GameObject:
   m_ObjectHideFlags: 0
@@ -7651,8 +7703,8 @@ GameObject:
   - component: {fileID: 1727466956}
   - component: {fileID: 1727466955}
   m_Layer: 0
-  m_Name: Tilemap (1)
-  m_TagString: Untagged
+  m_Name: Wall
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7710,8 +7762,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 415637829
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -10874,15 +10926,13 @@ GameObject:
   - component: {fileID: 1851877390}
   - component: {fileID: 1851877389}
   - component: {fileID: 1851877388}
-  - component: {fileID: 1851877387}
-  - component: {fileID: 1851877386}
   m_Layer: 5
-  m_Name: FungusStaminaBar
+  m_Name: SliderBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1851877385
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10890,7 +10940,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1851877384}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.11, y: 0.11, z: 0.11}
   m_ConstrainProportionsScale: 1
@@ -10898,40 +10948,13 @@ RectTransform:
   - {fileID: 2042787039}
   - {fileID: 982855549}
   - {fileID: 115402412}
-  m_Father: {fileID: 1865752274}
+  m_Father: {fileID: 1160165614}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7, y: -1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 5, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1851877386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851877384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ca4550c952c9ba4b8714cb726bac4f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1851877387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851877384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fac1349deb417438ec64e0b592a1f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  staminaSlider: {fileID: 0}
-  target: {fileID: 0}
-  offset: {x: 0.8, y: -0.2, z: 0}
 --- !u!114 &1851877388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11052,12 +11075,12 @@ RectTransform:
   m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1851877385}
-  m_Father: {fileID: 801297007}
+  - {fileID: 1160165614}
+  m_Father: {fileID: 1882236615}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.8, y: -5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1082.0619}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1865752275
@@ -11184,14 +11207,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDontDestroy: 0
-  canInteractSlot: 1
-  isRecoveringInteractSlot: 0
   fungusCurrentStatusHUD: {fileID: 1929879923}
   fungusSlotListHUD: {fileID: 1021239435}
-  fungusStaminaBar: {fileID: 1851877387}
-  currentSlotIndex: -1
-  currentStamina: 0
-  currentFungusInfo: {fileID: 0}
+  fungusStamina: {fileID: 1160165615}
+  CurrentFungusData:
+    maxHealth: 0
+    damage: 0
+    lv: 0
+    moveSpeed: 0
+    dashTime: 0
+    dashForce: 0
+    dashStamina: 0
+    fungusConfig: {fileID: 0}
+    fungusStats: {fileID: 0}
+  CurrentFungusInfo: {fileID: 0}
+  CurrentSlotIndex: -1
   fungusInfoList: []
   inputSlotFungus: 31000000320000003300000034000000
 --- !u!4 &1882236615
@@ -11206,7 +11236,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1865752274}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1900636386
@@ -11467,6 +11498,8 @@ MonoBehaviour:
   currentDamageSlider: {fileID: 1900636388}
   healthText: {fileID: 1191635091}
   lvText: {fileID: 1095927656}
+  takingDamage: 0
+  fungusInfo: {fileID: 0}
 --- !u!1 &1929934803
 GameObject:
   m_ObjectHideFlags: 0

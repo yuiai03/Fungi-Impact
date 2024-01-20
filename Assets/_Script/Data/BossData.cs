@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,19 @@ using UnityEngine;
 public class BossData
 {
     public float maxHealth;
-    public float health;
+    public float health
+    {
+        get => _health;
+        set
+        {
+            if (value != _health)
+            {
+                _health = Mathf.Clamp(value, 0, maxHealth);
+                OnHealthChangeEvent?.Invoke(health, maxHealth);
+            }
+        }
+    }
+    private float _health;
 
     public int damage;
 
@@ -16,4 +29,7 @@ public class BossData
 
     public BossConfig bossConfig;
     public BossStats bossStats;
+
+    public Action<float, float> OnHealthChangeEvent;
+
 }

@@ -1,74 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EventManager;
 
 public class BossHealth : MonoBehaviour
 {
-    [SerializeField] private float countChangeDamageSlider;
-    [SerializeField] private int takingDamage;
-    private BossInfoReader bossInfo;
+    private BossData bossData;
+
+    public Action<int> OnTakeDamageEvent;
+    public Action OnDiedEvent;
+
     private void Awake()
     {
-        bossInfo = GetComponent<BossInfoReader>();
+        EventManager.onSpawnBossInit += OnSpawnBossInit;
 
     }
     private void OnDestroy()
     {
+        EventManager.onSpawnBossInit -= OnSpawnBossInit;
     }
-    private void Update()
+
+
+    void OnSpawnBossInit(BossInfoReader info)
     {
-        UpdateCurrentDamageSlider();
+        bossData = info.BossData;
     }
+
     public void TakeDamage(int value)
     {
-        bossInfo.BossData.health -= value;
+        bossData.health -= value;
 
-        if (bossInfo.BossData.health <= 0) bossInfo.BossData.health = 0;
+        if (bossData.health <= 0) bossData.health = 0;
 
-        bossInfo.currentStatusHUD.SetCurrentHealthSlider(bossInfo.BossData.health);
-        bossInfo.currentStatusHUD.SetHealthText(bossInfo.BossData.health, bossInfo.BossData.maxHealth);
-        takingDamage = value;
-    }
-    void UpdateCurrentDamageSlider()
-    {
-        if (bossInfo == null) return;
+        var takingDamage = value;
 
-        float healthValue = bossInfo.currentStatusHUD.currentHealthSlider.value;
-        float damageValue = bossInfo.currentStatusHUD.currentDamageSlider.value;
-
-
-        if (takingDamage == 0)
+        OnTakeDamageEvent?.Invoke(takingDamage);
+        if(bossData.health <= 0)
         {
-            countChangeDamageSlider = 0;
-            return;
-        }
-
-        if (Mathf.RoundToInt(healthValue) > Mathf.RoundToInt(damageValue))
-        {
-            ChangeCurrentDamageValue(true);
-        }
-        else if (Mathf.RoundToInt(healthValue) < Mathf.RoundToInt(damageValue))
-        {
-            ChangeCurrentDamageValue(false);
-        }
-        else
-        {
-            takingDamage = 0;
+            bossData.health = 0;
+            OnDiedEvent?.Invoke();
         }
     }
-    void ChangeCurrentDamageValue(bool increase)
-    {
-        countChangeDamageSlider += Time.deltaTime;
-        if (countChangeDamageSlider >= GameConfig.damageSliderChangeWaitTime)
-        {
-            if (increase)
-            {
-                bossInfo.currentStatusHUD.currentDamageSlider.value = bossInfo.BossData.health;
-            }
-            else
-            {
-                bossInfo.currentStatusHUD.currentDamageSlider.value -= takingDamage * 2 * Time.deltaTime;
-            }
-        }
-    }
+ 
 }

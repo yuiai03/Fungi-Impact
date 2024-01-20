@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 828401676599519332}
   - component: {fileID: 7706793565005717724}
   - component: {fileID: 5545379974258698758}
-  - component: {fileID: 8953332475906656103}
   - component: {fileID: 6007762983746391533}
   - component: {fileID: 1570554745195618137}
-  - component: {fileID: 1884455426848380469}
+  - component: {fileID: 4846345850558373805}
+  - component: {fileID: 8679173961508184609}
   m_Layer: 9
   m_Name: WhirlingCyroFungus
-  m_TagString: Player
+  m_TagString: Fungus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,17 +120,21 @@ MonoBehaviour:
   animator: {fileID: 5620308369965287826}
   switchFungusEffect: {fileID: 3370361895682789903}
   shadowSwitchFungusEffect: {fileID: 4655453328424554858}
-  fungusData:
+  FungusData:
     maxHealth: 0
-    health: 0
-    damage: 0
+    atk: 0
     lv: 0
+    critRate: 5
+    critDamage: 50
+    elementalMastery: 0
     moveSpeed: 0
     dashTime: 0
     dashForce: 0
     dashStamina: 0
     fungusConfig: {fileID: 0}
     fungusStats: {fileID: 0}
+  fungusCurrentStatusHUD: {fileID: 0}
+  fungusSlotHUD: {fileID: 0}
 --- !u!114 &5545379974258698758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,25 +145,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d222edf12a654649a5091986bd0ed7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAttacking: 0
-  isDashing: 0
-  isDying: 0
-  isDashCoolingDown: 0
-  moveDirection: {x: 0, y: 0}
-  lastDirection: {x: 0, y: 0}
-  attackDirection: {x: 0, y: 0}
---- !u!114 &8953332475906656103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546919510929970073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8274d558b6062b8429b068eae53a63fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6007762983746391533
@@ -186,9 +171,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f03af94210ade3408cd527530dee7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countChangeDamageSlider: 0
-  takingDamage: 0
---- !u!114 &1884455426848380469
+--- !u!114 &4846345850558373805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546919510929970073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4b9d872248b5d44a138d01ce64a0e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
+--- !u!114 &8679173961508184609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,6 +209,7 @@ GameObject:
   - component: {fileID: 3744393124641408651}
   - component: {fileID: 5620308369965287826}
   - component: {fileID: 5337067594821557156}
+  - component: {fileID: 6049937510510268451}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -321,12 +318,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventCalled: 0
-  OnStartAnimEvent:
+  OnStartAttackEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnActionAnimEvent:
+  OnEndAttackEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6049937510510268451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3458940972652522419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71592585464751b45b5d309607b7d36a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7213442077404425553
 GameObject:
   m_ObjectHideFlags: 0

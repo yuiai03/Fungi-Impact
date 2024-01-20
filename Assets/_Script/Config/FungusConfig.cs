@@ -19,7 +19,7 @@ public class FungusConfig : ScriptableObject
 
     public Material dissolveMaterial;
 
-    public AnimatorController animatorController;
+    public UnityEditor.Animations.AnimatorController animatorController;
     
     public Elemental fungusElemental;
 

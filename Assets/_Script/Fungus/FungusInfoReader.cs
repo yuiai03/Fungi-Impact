@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -8,28 +9,34 @@ public class FungusInfoReader : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem switchFungusEffect;
     [SerializeField] private ParticleSystem shadowSwitchFungusEffect;
-    
-    [Header("Data")]
-    [SerializeField] private FungusData fungusData;
-    public FungusData FungusData { get => fungusData; }
+
+    public FungusData FungusData;
+
+    [Header("HUD")]
+    public FungusCurrentStatusHUD fungusCurrentStatusHUD;
     public FungusSlotHUD fungusSlotHUD;
     public FungusController FungusController { get; private set; }
+
     private void Awake()
     {
         FungusController = GetComponent<FungusController>();
     }
+
     public void GetData(FungusData data)
     {
-        fungusData = data;
+        FungusData = data;
 
-        GetModel(fungusData.fungusConfig.fungusModelSprite, fungusData.fungusConfig.dissolveMaterial);
+        GetModel(FungusData.fungusConfig.fungusModelSprite, FungusData.fungusConfig.dissolveMaterial);
 
-        GetAnimatorController(this.fungusData.fungusConfig.animatorController);
+        GetAnimatorController(this.FungusData.fungusConfig.animatorController);
 
-        GetParticleGradient(this.fungusData.fungusConfig.gradientParticle);
+        GetParticleGradient(this.FungusData.fungusConfig.gradientParticle);
 
         switchFungusEffect.Play();
     }
+
+
+
     void GetParticleGradient(Gradient gradient)
     {
         var switchColor = switchFungusEffect.colorOverLifetime;

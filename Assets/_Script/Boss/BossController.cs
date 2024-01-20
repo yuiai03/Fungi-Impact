@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    public BossInfoReader BossInfo { get => bossInfo; }
-    private BossInfoReader bossInfo;
-    private BossCollider bossCollider;
-    private BossAttack bossAttack;
-    private BossHealth bossHealth;
+    public BossInfoReader BossInfo { get; private set; }
+    public BossCollider BossCollider { get; private set; }
+    public BossAttack BossAttack{ get; private set; }
+    public BossHealth BossHealth{ get; private set; }
 
     private void Awake()
     {
-        bossAttack = GetComponent<BossAttack>();
-        bossCollider = GetComponent<BossCollider>();
-        bossInfo = GetComponent<BossInfoReader>();
-        bossHealth = GetComponent<BossHealth>();
+        BossAttack = GetComponent<BossAttack>();
+        BossCollider = GetComponent<BossCollider>();
+        BossInfo = GetComponent<BossInfoReader>();
+        BossHealth = GetComponent<BossHealth>();
     }
 
     public Transform Target()
     {
-        if (bossCollider.ColliderList().Length == 0) return null;
+        if (BossCollider.ColliderList().Length == 0) return null;
         
-        return bossCollider.ColliderList()[0].transform;
+        return BossCollider.ColliderList()[0].transform;
 
     }
 }

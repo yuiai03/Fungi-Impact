@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 6883356173034809584}
   - component: {fileID: -7978639963548520947}
   - component: {fileID: 3483270404147721269}
-  m_Layer: 0
-  m_Name: Bullet
-  m_TagString: PlayerBullet
+  - component: {fileID: 1143349599381050098}
+  m_Layer: 10
+  m_Name: FungusBullet
+  m_TagString: FungusBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,10 +163,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422eaf0c65be1c8498d9b8d9206a58bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
   bulletExplosionPrefab: {fileID: 6891930824014245391, guid: e791bfb53e22fc340b59a8180baa634e, type: 3}
-  target: {fileID: 0}
-  direction: {x: 0, y: 0, z: 0}
+  speed: 10
+--- !u!114 &1143349599381050098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505717721009736726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b248d91e0fb00eb46a1c579f2d0d9394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionTagList:
+  - Boss
+  - Wall
+  detectionEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  layerCheck:
+    serializedVersion: 2
+    m_Bits: 1088
 --- !u!1 &6915139857687338534
 GameObject:
   m_ObjectHideFlags: 0

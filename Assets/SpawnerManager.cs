@@ -7,8 +7,6 @@ public class SpawnerManager : Singleton<SpawnerManager>
     [SerializeField] private Transform root; //obj player holder
 
     private ManagerRoot managerRoot => ManagerRoot.Instance;
-    private GameplayManager gameplayManager => GameplayManager.Instance;
-    private BossManager bossManager => BossManager.Instance;
     private void Start()
     {
         Init();
@@ -27,7 +25,8 @@ public class SpawnerManager : Singleton<SpawnerManager>
         
         foreach (FungusNameType fungusNameType in fungusNameTypeList)
         {
-            FungusPackedConfig fungusPackedConfig = availableFungiConfig.GetFungusPackedConfigByNameType(fungusNameType);
+            FungusPackedConfig fungusPackedConfig;
+            fungusPackedConfig = availableFungiConfig.GetFungusPackedConfigByNameType(fungusNameType);
 
             FungusInfoReader fungusInfo = Instantiate(fungusPackedConfig.fungusInfoReader, root);
 
@@ -36,7 +35,7 @@ public class SpawnerManager : Singleton<SpawnerManager>
             fungusData.maxHealth = fungusPackedConfig.stats.maxHealth;
             fungusData.health = fungusPackedConfig.stats.maxHealth;
 
-            fungusData.damage = fungusPackedConfig.stats.damage;
+            fungusData.atk = fungusPackedConfig.stats.atk;
             fungusData.lv = fungusPackedConfig.stats.lv;
             fungusData.moveSpeed = fungusPackedConfig.stats.moveSpeed;
 
@@ -46,6 +45,8 @@ public class SpawnerManager : Singleton<SpawnerManager>
 
             fungusData.fungusConfig = fungusPackedConfig.config;
             fungusData.fungusStats = fungusPackedConfig.stats;
+
+
 
             fungusInfo.GetData(fungusData);
 
@@ -60,7 +61,8 @@ public class SpawnerManager : Singleton<SpawnerManager>
         BossNameType actionBossNameType = managerRoot.actionBossNameType;
         AvailableBossConfig availableBossConfig = managerRoot.ManagerRootConfig.availableBossConfig;
 
-        BossPackedConfig bossPackedConfig = availableBossConfig.GetBossPackedConfigByNameType(actionBossNameType);
+        BossPackedConfig bossPackedConfig;
+        bossPackedConfig = availableBossConfig.GetBossPackedConfigByNameType(actionBossNameType);
 
         BossData bossData = new BossData();
 

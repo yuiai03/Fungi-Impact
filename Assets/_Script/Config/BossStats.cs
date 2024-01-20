@@ -13,4 +13,7 @@ public class BossStats : ScriptableObject
 
     public float moveSpeed = 3f;
 
+    public float critRate = 5f;
+    public float critDamage = 50f;
+
 }

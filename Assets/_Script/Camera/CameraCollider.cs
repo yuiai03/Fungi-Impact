@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraCollider : MonoBehaviour
+public class CameraCollider : Singleton<CameraCollider>
 {
     [SerializeField] private Vector2 checkArea;
     [SerializeField] private LayerMask layerMask;
-    public static CameraCollider instance;
-    void Awake()
+
+    protected override void Awake()
     {
-        instance = this;
+        base.Awake();
 
         _GetCameraSize();
     }

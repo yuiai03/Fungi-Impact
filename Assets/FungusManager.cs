@@ -7,27 +7,28 @@ using static EventManager;
 
 public class FungusManager : Singleton<FungusManager>
 {
-    [SerializeField] private bool canInteractSlot = true;
-    [SerializeField] private bool isRecoveringInteractSlot = false;
+    public bool IsRecoveringInteractSlot { get; private set; } = false;
+    public bool CanInteractSlot { get; private set; } = true;
 
     [Header("HUD")]
     [SerializeField] private FungusCurrentStatusHUD fungusCurrentStatusHUD;
     [SerializeField] private FungusSlotListHUD fungusSlotListHUD;
-    [SerializeField] private StaminaBar fungusStaminaBar;
+    public FungusStamina fungusStamina;
 
     [Header("Current Fungus Info")]
-    [SerializeField] private int currentSlotIndex = -1;
-    [SerializeField] private float currentStamina;
-    public FungusInfoReader CurrentFungusInfo { get => currentFungusInfo; }
-    [SerializeField] private FungusInfoReader currentFungusInfo;
+    public int CurrentSlotIndex;
+    public FungusData CurrentFungusData;
+    public FungusInfoReader CurrentFungusInfo;
 
     [Header("Fungus Slot")]
-    [SerializeField] private List<FungusInfoReader> fungusInfoList = new List<FungusInfoReader>();
+    [SerializeField] private List<FungusInfoReader> fungusInfoList;
     [SerializeField] private List<KeyCode> inputSlotFungus;
 
     private Coroutine recoverySwitchSlotCoroutine;
-    private Coroutine staminaRecoveryCoroutine;
-    private Coroutine updateStaminaBarCoroutine;
+    private Coroutine fungusDieCoroutine;
+
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -36,52 +37,52 @@ public class FungusManager : Singleton<FungusManager>
     private void OnDestroy()
     {
         onSpawnFungusInit -= OnSpawnFungusInit;
+        CurrentFungusInfo.FungusController.FungusHealth.OnDiedEvent += OnFungusDied;
     }
     public void Update()
     {
         InputSwitchSlot();
     }
+
+    public void OnFungusDied()
+    {
+        if (CurrentFungusInfo.gameObject.activeSelf)
+        {
+            if (fungusDieCoroutine != null) StopCoroutine(fungusDieCoroutine);
+            fungusDieCoroutine = StartCoroutine(FungusDieCoroutine());
+        }
+    }
     public void OnSpawnFungusInit(List<FungusInfoReader> fungusInfoList)
     {
-        GetListFungusInfo(fungusInfoList);
+        this.fungusInfoList = new List<FungusInfoReader>();
+        this.fungusInfoList = fungusInfoList;
         Init();
     }
+
+
     public void Init()
     {
         fungusSlotListHUD.SetInit(fungusInfoList, inputSlotFungus);
         SwitchFungus(0);
         SetStaminaInit();
+
     }
-    public void GetListFungusInfo(List<FungusInfoReader> fungusInfoList)
-    {
-        this.fungusInfoList = fungusInfoList;
-    }
+
     public void InputSwitchSlot()
     {
         for (int i = 0; i < inputSlotFungus.Count; i++)
         {
-            if (Input.GetKeyDown(inputSlotFungus[i]) &&CanInputSwitchSlot())
+            if (Input.GetKeyDown(inputSlotFungus[i]) && CanInputSwitchSlot())
             {
                 SwitchFungus(i);
             }
         }
     }
-    public bool CanInputSwitchSlot()
-    {
-        return canInteractSlot && !isRecoveringInteractSlot;
-    }
-    bool CanSwitchFungus(int index)
-    {
-        if (currentSlotIndex == -1) return true;
 
-        FungusController currentFungus = fungusInfoList[currentSlotIndex].FungusController;
-        FungusData newFungusData = fungusInfoList[index].FungusData;
 
-        return currentSlotIndex != index && newFungusData.health != 0 && !currentFungus.IsDying() 
-            && !currentFungusInfo.FungusController.IsAttacking();
-    }
     public void SwitchFungus(int slotIndex)
     {
+
         if (!CanSwitchFungus(slotIndex)) return;
 
         for (int i = 0; i < fungusInfoList.Count; i++)
@@ -106,53 +107,59 @@ public class FungusManager : Singleton<FungusManager>
     void ReloadCurrentFungus(int index)
     {
 
-        if (currentSlotIndex != -1)
+        if (CurrentSlotIndex != -1)
         {
             //Set lại vị trí cho Fungus
-            Vector2 currentFungusPos = fungusInfoList[currentSlotIndex].transform.position;
+            Vector2 currentFungusPos = fungusInfoList[CurrentSlotIndex].transform.position;
             fungusInfoList[index].transform.position = currentFungusPos;
 
             //Đặt lại hướng cho Fungus
-            FungusController oldFungusController = currentFungusInfo.FungusController;
+            FungusController oldFungusController = CurrentFungusInfo.FungusController;
             FungusController newFungusController = fungusInfoList[index].FungusController;
-            newFungusController.SetAttackDirection(oldFungusController.AttackDirection);
-            newFungusController.SetLastDirection(oldFungusController.LastDirection);
-            newFungusController.SetMoveDirection(oldFungusController.MoveDirection);
+            newFungusController.AttackDirection = oldFungusController.AttackDirection;
+            newFungusController.LastDirection = oldFungusController.LastDirection;
+            newFungusController.MoveDirection = oldFungusController.MoveDirection;
 
         }
 
         //Đặt lại thông tin và chỉ số
         FungusInfoReader fungusInfo = fungusInfoList[index];
-        currentFungusInfo = fungusInfo;
-        currentSlotIndex = index;
+        CurrentFungusInfo = fungusInfo;
+        CurrentSlotIndex = index;
+        CurrentFungusData = fungusInfo.FungusData;
 
         //Đặt lại trạng thái đang chọn cho Fungus slot hiện tại
         fungusSlotListHUD.SetSlotSelect(index);
 
         //thanh thể lực đổi mục tiêu 
-        fungusStaminaBar.target = fungusInfoList[index].transform;
+        fungusStamina.target = fungusInfoList[index].transform;
 
         //Đặt lại mục tiêu cho camera
         EventManager.ActionOnCameraChangeTarget(fungusInfoList[index].transform);
 
-        if (currentSlotIndex != -1)
+        if (CurrentSlotIndex != -1)
         {
             //Gọi sự  kiện khi được chuyển đổi
-            EventManager.ActionOnSwitchFungus(fungusInfoList[currentSlotIndex], fungusInfoList[index], fungusCurrentStatusHUD);
+            EventManager.ActionOnSwitchFungus(fungusInfoList[index], fungusCurrentStatusHUD);
         }
+
+        CurrentFungusInfo.FungusController.FungusHealth.OnDiedEvent += OnFungusDied;
     }
     public void InteractSlotState(bool state)
     {
-        canInteractSlot = state;
+        if (!IsRecoveringInteractSlot)
+        {
+            CanInteractSlot = state;
 
-        if (canInteractSlot) SetFadeSlot(GameConfig.showSlotAlpha);
-        else SetFadeSlot(GameConfig.fadeSlotAlpha);
+            if (CanInteractSlot) SetFadeSlot(GameConfig.showSlotAlpha);
+            else SetFadeSlot(GameConfig.fadeSlotAlpha);
+        }
     }
     public void SetFadeSlot(float value)
     {
         foreach (var slot in fungusSlotListHUD.FungusSlotHUDList)
         {
-            if (slot.CanActive()) slot.SetFade(value);
+            if (slot.CanActive) slot.SetFade(value);
             else slot.SetFade(GameConfig.inactiveSlotAlpha);
 
         }
@@ -161,8 +168,6 @@ public class FungusManager : Singleton<FungusManager>
     {
         InteractSlotState(false);
         RecoveringInteractSlotState(true);
-
-        SetFadeSlot(GameConfig.fadeSlotAlpha);
 
         float timer = GameConfig.switchSlotRecoveryTime;
 
@@ -175,20 +180,22 @@ public class FungusManager : Singleton<FungusManager>
 
         timer = 0;
 
-        InteractSlotState(true);
+        SetRecoveryInteractSlot(timer, false);
+        
         RecoveringInteractSlotState(false);
 
-        SetRecoveryInteractSlot(timer, false);
-
-        SetFadeSlot(GameConfig.showSlotAlpha);
-
+        if(FungusNotUsingSkill())
+            InteractSlotState(true);
     }
-    public void RecoveringInteractSlotState(bool state) => isRecoveringInteractSlot = state;
+    public void RecoveringInteractSlotState(bool state)
+    {
+        IsRecoveringInteractSlot = state;
+    }
     public void SetRecoveryInteractSlot(float value, bool state)
     {
         foreach (var slot in fungusSlotListHUD.FungusSlotHUDList)
         {
-            if (slot.CanActive())
+            if (slot.CanActive)
             {
                 slot.SetSlotInteractRecoveryState(state);
                 slot.SetSlotInteractRecoverySlider(value);
@@ -202,6 +209,14 @@ public class FungusManager : Singleton<FungusManager>
             }
         }
     }
+
+    void SetStaminaInit()
+    {
+        fungusStamina.CurrentStamina = PlayerConfig.maxStamina;
+        fungusStamina.SetStaminaSliderInit(0, PlayerConfig.maxStamina);
+    }
+
+
     public int GetFungusAliveIndex()
     {
         for (int i = 0; i < fungusInfoList.Count; i++)
@@ -214,78 +229,51 @@ public class FungusManager : Singleton<FungusManager>
         }
         return -1;
     }
-    public bool CanInteractSlot()
-    {
-        return canInteractSlot;
-    }
-    public bool IsRecoveringInteractSlot()
-    {
-        return isRecoveringInteractSlot;
-    }
 
-    void SetStaminaInit()
+    public IEnumerator FungusDieCoroutine()
     {
-        currentStamina = PlayerConfig.maxStamina;
-        fungusStaminaBar.SetStaminaSliderInit(0, PlayerConfig.maxStamina);
-    }
-    public void ConsumeStamina(float value) => currentStamina -= value;
+        FungusController fungusController = CurrentFungusInfo.FungusController;
 
-    public void UpdateStamina()
-    {
-        if (currentStamina < PlayerConfig.maxStamina)
+        fungusController.IsDied = true;
+        fungusController.DiedState();
+
+        int fungusAliveIndex = GetFungusAliveIndex();
+        if (fungusAliveIndex >= 0)
         {
-            FungusController fungusController = fungusInfoList[currentSlotIndex].GetComponent<FungusController>();
+            yield return new WaitForSeconds(PlayerConfig.dyingWaitTime);
 
-            if (!fungusController.isDashing)
-            {
-                if (staminaRecoveryCoroutine != null) StopCoroutine(staminaRecoveryCoroutine);
-                staminaRecoveryCoroutine = StartCoroutine(StaminaRecoveryCoroutine());
-            }
-
-            if (updateStaminaBarCoroutine != null) StopCoroutine(updateStaminaBarCoroutine);
-            updateStaminaBarCoroutine = StartCoroutine(UpdateStaminaBarCoroutine());
+            SwitchFungus(fungusAliveIndex);
+        }
+        else
+        {
+            Debug.Log("Game over");
         }
     }
 
-    IEnumerator UpdateStaminaBarCoroutine()
+
+
+    bool FungusNotUsingSkill()
     {
-        //cập nhật thanh thể lực khi dash
-        while (Mathf.RoundToInt(fungusStaminaBar.staminaSlider.value) > Mathf.RoundToInt(currentStamina))
-        {
-            fungusStaminaBar.staminaSlider.value -= PlayerConfig.staminaBarConsumeSpeed * Time.deltaTime;
-            yield return null;
-        }
+        return !CurrentFungusInfo.FungusController.IsUsingSkill;
     }
-    IEnumerator StaminaRecoveryCoroutine()
+    bool FungusAlive(int index)
     {
-        fungusStaminaBar.StaminaBarState(true);
-
-        float timer = PlayerConfig.staminaRecoveryWaitTime;
-
-        //thời gian chờ đợi để chờ đợi 
-        while(timer > 0)
-        {
-            timer -= Time.deltaTime;
-            yield return null;
-        }
-
-        //bắt đầu quá trình hồi phục
-        while (timer <= 0 && currentStamina < PlayerConfig.maxStamina)
-        {
-
-            currentStamina += PlayerConfig.staminaRecoverySpeed * Time.deltaTime;
-            
-            fungusStaminaBar.staminaSlider.value += PlayerConfig.staminaRecoverySpeed * Time.deltaTime;
-
-            yield return null;
-        }
-
-        currentStamina = PlayerConfig.maxStamina;
-        fungusStaminaBar.StaminaBarState(false);
-
+        FungusInfoReader fungusInfo = fungusInfoList[index];
+        return !fungusInfo.FungusController.IsDied;
     }
-    public float GetCurrentStamina()
+
+
+    bool CanSwitchFungus(int index)
     {
-        return currentStamina;
+        if (CurrentSlotIndex == -1) return true;
+
+        return CurrentSlotIndex != index && FungusAlive(index);
     }
+
+
+    public bool CanInputSwitchSlot()
+    {
+        return CanInteractSlot && !IsRecoveringInteractSlot && FungusNotUsingSkill();
+    }
+
 }

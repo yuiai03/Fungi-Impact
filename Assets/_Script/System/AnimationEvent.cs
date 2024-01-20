@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,25 +6,26 @@ using UnityEngine.Events;
 public class AnimationEvent : MonoBehaviour
 {
     [SerializeField] private bool eventCalled;
-    public UnityEvent OnStartAnimEvent;
-    public UnityEvent OnActionAnimEvent;
 
-    private FungusInfoReader infoReader;
+
+    public UnityEvent OnStartAttackEvent;
+    public UnityEvent OnEndAttackEvent;
+
     private void Awake()
     {
-        infoReader = GetComponentInParent<FungusInfoReader>();
+
     }
-    public void AttackEvent()
+    public void OnStartAttack()
+    {
+        OnStartAttackEvent?.Invoke();
+        eventCalled = true;
+    }
+
+    public void OnEndAttack()
     {
         if (!eventCalled) return;
 
-        OnActionAnimEvent?.Invoke();
+        OnEndAttackEvent?.Invoke();
         eventCalled = false;
-    }
-    public void StartEvent()
-    {
-        OnStartAnimEvent?.Invoke();
-        eventCalled = true;
-
     }
 }

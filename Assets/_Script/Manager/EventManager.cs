@@ -22,11 +22,11 @@ public class EventManager
     }
 
     //Kích hoạt khi chuyển đổi Fungus trong chiến đấu
-    public delegate void OnSwitchFungus(FungusInfoReader oldFungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD);
+    public delegate void OnSwitchFungus(FungusInfoReader fungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD);
     public static event OnSwitchFungus onSwitchFungus;
-    public static void ActionOnSwitchFungus(FungusInfoReader oldFungusInfo, FungusInfoReader newFungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD)
+    public static void ActionOnSwitchFungus(FungusInfoReader fungusInfo, FungusCurrentStatusHUD fungusCurrentStatusHUD)
     {
-        onSwitchFungus?.Invoke(oldFungusInfo, newFungusInfo, fungusCurrentStatusHUD);
+        onSwitchFungus?.Invoke(fungusInfo, fungusCurrentStatusHUD);
     }
 
     //Kích hoạt khi ấn nút xem thông tin boss
@@ -45,7 +45,7 @@ public class EventManager
         onSelectBoss?.Invoke(bossSlot);
     }
 
-    //Kích hoạt khi Fungus chết
+    //Kích hoạt khi tất cả fungus chết
     public delegate void OnFungusDie();
     public static event OnFungusDie onFungusDie;
     public static void ActionOnFungusDie()

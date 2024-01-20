@@ -10,11 +10,21 @@ public class BossBullet : MonoBehaviour
 
     private Rigidbody2D rb2d;
     private BossInfoReader bossInfo;
+    private TriggerDetection triggerDetection;
     private PoolManager poolManager => PoolManager.Instance;
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        triggerDetection = GetComponent<TriggerDetection>();
+
+        _ListenEvents();
+    }
+
+    void _ListenEvents()
+    {
+        triggerDetection.detectionEnterEvent.AddListener((GameObject obj) => TriggerDetection(obj));
+
     }
     public void GetBossInfo(BossInfoReader bossInfo)
     {
@@ -28,23 +38,22 @@ public class BossBullet : MonoBehaviour
         direction = (targetPos - transform.position).normalized;
         rb2d.velocity = direction * speed;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    void TriggerDetection(GameObject @object)
     {
-        if (collision.CompareTag("Boss") || collision.CompareTag("PlayerBullet") || collision.CompareTag("BossBullet")) return;
-
-        if (collision.CompareTag("Player"))
+        if (@object.GetComponent<FungusController>())
         {
+            FungusController fungusController = @object.GetComponent<FungusController>();
 
-            FungusController fungusController = collision.GetComponent<FungusController>();
+            if (fungusController.IsNA_ing) return;
 
-            if (fungusController.isAttacking) return;
+            fungusController.FungusHealth.TakeDamage(bossInfo.BossData.damage);
 
-            fungusController.GetFungusHealth().TakeDamage(bossInfo.BossData.damage);
-
-            Vector3 collisionPos = collision.transform.position;
+            Vector3 collisionPos = @object.transform.position;
             TextPopUp textPopUp = poolManager.SpawnObj(poolManager.GetTextPopUp(), collisionPos, PoolType.TextPopUp);
             textPopUp.SetPopUpDamage(bossInfo.BossData.damage, bossInfo.BossData.bossConfig.bossColor);
         }
+
         gameObject.SetActive(false);
     }
 }
