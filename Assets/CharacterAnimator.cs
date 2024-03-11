@@ -39,12 +39,20 @@ public class CharacterAnimator : MonoBehaviour
         animator.SetTrigger("Die");
     }
 
-    public void SetTriggerAttack()
+    public void SetTriggerNA()
     {
-        animator.SetTrigger("Attack");
+        animator.SetTrigger("NA");
+    }
+    public void SetTriggerES()
+    {
+        animator.SetTrigger("ES");
+    }
+    public void SetTriggerEB()
+    {
+        animator.SetTrigger("EB");
     }
 
-    //comming soon
+    //coming soon
     public void SetTriggerHurt()
     {
         animator.SetTrigger("Hurt");

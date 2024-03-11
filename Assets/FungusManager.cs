@@ -11,6 +11,8 @@ public class FungusManager : Singleton<FungusManager>
     public bool CanInteractSlot { get; private set; } = true;
 
     [Header("HUD")]
+    [SerializeField] private FungusSkillHUD ESSkillHUD;
+    [SerializeField] private FungusSkillHUD EBSkillHUD;
     [SerializeField] private FungusCurrentStatusHUD fungusCurrentStatusHUD;
     [SerializeField] private FungusSlotListHUD fungusSlotListHUD;
     public FungusStamina fungusStamina;
@@ -37,7 +39,6 @@ public class FungusManager : Singleton<FungusManager>
     private void OnDestroy()
     {
         onSpawnFungusInit -= OnSpawnFungusInit;
-        CurrentFungusInfo.FungusController.FungusHealth.OnDiedEvent += OnFungusDied;
     }
     public void Update()
     {
@@ -64,8 +65,8 @@ public class FungusManager : Singleton<FungusManager>
     {
         fungusSlotListHUD.SetInit(fungusInfoList, inputSlotFungus);
         SwitchFungus(0);
-        SetStaminaInit();
-
+        GetStaminaInit();
+        GetSkillConfig();
     }
 
     public void InputSwitchSlot()
@@ -127,6 +128,9 @@ public class FungusManager : Singleton<FungusManager>
         CurrentFungusInfo = fungusInfo;
         CurrentSlotIndex = index;
         CurrentFungusData = fungusInfo.FungusData;
+
+        //Đặt lại thông tin skill
+
 
         //Đặt lại trạng thái đang chọn cho Fungus slot hiện tại
         fungusSlotListHUD.SetSlotSelect(index);
@@ -210,7 +214,7 @@ public class FungusManager : Singleton<FungusManager>
         }
     }
 
-    void SetStaminaInit()
+    void GetStaminaInit()
     {
         fungusStamina.CurrentStamina = PlayerConfig.maxStamina;
         fungusStamina.SetStaminaSliderInit(0, PlayerConfig.maxStamina);
@@ -273,7 +277,92 @@ public class FungusManager : Singleton<FungusManager>
 
     public bool CanInputSwitchSlot()
     {
-        return CanInteractSlot && !IsRecoveringInteractSlot && FungusNotUsingSkill();
+        return CanInteractSlot && !IsRecoveringInteractSlot 
+            && FungusNotUsingSkill() && FungusAlive(CurrentSlotIndex);
     }
 
+    public void GetSkillConfig()
+    {
+        foreach (var fungus in fungusInfoList)
+        {
+            FungusSkillConfig skillConfig = fungus.FungusData.skillConfig;
+            if (skillConfig == null) return;
+
+            FungusAttack fungusAttack = fungus.FungusController.FungusAttack;
+            fungusAttack.GetSkillConfig(skillConfig);
+        }
+    }
+
+    //cooldown
+
+    public void StartES_Cooldown(FungusAttack fungusAttack)
+    {
+        StartCoroutine(ES_CooldownCoroutine(fungusAttack));
+
+    }
+    public void StartEB_Cooldown(FungusAttack fungusAttack)
+    {
+        StartCoroutine(EB_CooldownCoroutine(fungusAttack));
+
+    }
+
+
+    //ES
+    public IEnumerator ES_CooldownCoroutine(FungusAttack fungusAttack)
+    {
+        float timer = fungusAttack.eSTime_Cooldown;
+
+        SetES_CooldownState(timer, true, fungusAttack);
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+
+            fungusAttack.eSTimeIsCooling = timer;
+            SetES_CooldownState(timer, true, fungusAttack);
+
+            yield return null;
+        }
+        fungusAttack.eSTimeIsCooling = 0;
+
+        SetES_CooldownState(timer, false, fungusAttack);
+        
+    }
+
+    //EB
+    public IEnumerator EB_CooldownCoroutine(FungusAttack fungusAttack)
+    {
+        float timer = fungusAttack.eBTime_Cooldown;
+
+        SetEB_CooldownState(timer, true, fungusAttack);
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+
+            fungusAttack.eBTimeIsCooling = timer;
+            SetEB_CooldownState(timer, true, fungusAttack);
+
+            yield return null;
+        }
+        fungusAttack.eBTimeIsCooling = 0;
+
+        SetEB_CooldownState(timer, false, fungusAttack);
+
+    }
+
+    public void SetES_CooldownState(float value, bool state, FungusAttack fungusAttack)
+    {
+        FungusInfoReader info = fungusAttack.fungusController.FungusInfo;
+
+        if (CurrentFungusInfo != info) return;
+        ESSkillHUD.SetES_CooldownState(value, state);
+    }
+    public void SetEB_CooldownState(float value, bool state, FungusAttack fungusAttack)
+    {
+        FungusInfoReader info = fungusAttack.fungusController.FungusInfo;
+
+        if(CurrentFungusInfo != info) return;
+        EBSkillHUD.SetEB_CooldownState(value, state);
+    }
 }

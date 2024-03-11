@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxStamina: 100
   maxHealth: 10000
-  damage: 1000
+  atk: 10000
   lv: 1
   moveSpeed: 3
   dashTime: 0.2
   dashForce: 15
   dashStamina: 20
+  critRatePercent: 50
+  critDamagePercent: 50
+  elementalMastery: 0

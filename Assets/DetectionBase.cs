@@ -5,7 +5,8 @@ using UnityEngine.Events;
 
 public class DetectionBase : MonoBehaviour
 {
-    public List<string> detectionTagList;
+    public LayerMask layerCheck;
 
     public UnityEvent<GameObject> detectionEnterEvent;
+    public UnityEvent<GameObject> detectionStayEvent;
 }

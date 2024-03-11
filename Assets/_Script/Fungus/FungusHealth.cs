@@ -3,11 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FungusHealth : MonoBehaviour
+public class FungusHealth : HealthBase
 {
-    public Action<int> OnTakeDamageEvent;
-    public Action OnDiedEvent;
-
     private FungusData fungusData;
     private void Awake()
     {
@@ -23,11 +20,13 @@ public class FungusHealth : MonoBehaviour
         fungusData = fungusInfo.FungusData; 
 
     }
-    public void TakeDamage(int value)
+    public override void TakeDamage(int value)
     {
-        fungusData.health -= value;
+        int damage = value;
 
-        var takingDamage = value;
+        fungusData.health -= damage;
+
+        var takingDamage = damage;
 
         OnTakeDamageEvent?.Invoke(takingDamage);
 

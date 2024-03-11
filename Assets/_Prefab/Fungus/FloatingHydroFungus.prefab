@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 121022656997049467}
   - component: {fileID: 6612621552978813139}
   - component: {fileID: 363848762481708227}
-  - component: {fileID: 8253756237093875563}
   - component: {fileID: 8816000480931028973}
   - component: {fileID: 6857615357746680123}
-  - component: {fileID: 4416113591177566272}
-  - component: {fileID: 1359813682179489475}
+  - component: {fileID: -1692063809184940084}
+  - component: {fileID: 7532352401663098516}
   m_Layer: 9
   m_Name: FloatingHydroFungus
   m_TagString: Fungus
@@ -40,6 +39,7 @@ Transform:
   - {fileID: 1757452124824702373}
   - {fileID: 8700212060756519777}
   - {fileID: 6624927293601313249}
+  - {fileID: 8402939630684884151}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &121022656997049467
@@ -133,20 +133,9 @@ MonoBehaviour:
     dashStamina: 0
     fungusConfig: {fileID: 0}
     fungusStats: {fileID: 0}
+    skillConfig: {fileID: 0}
   fungusCurrentStatusHUD: {fileID: 0}
   fungusSlotHUD: {fileID: 0}
---- !u!114 &8253756237093875563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5224514762466500625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d222edf12a654649a5091986bd0ed7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8816000480931028973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f03af94210ade3408cd527530dee7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4416113591177566272
+--- !u!114 &-1692063809184940084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,11 +169,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5224514762466500625}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4b9d872248b5d44a138d01ce64a0e0, type: 3}
+  m_Script: {fileID: 11500000, guid: e0b774d28599aa646b920bc97362c9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
---- !u!114 &1359813682179489475
+--- !u!114 &7532352401663098516
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,10 +181,58 @@ MonoBehaviour:
   m_GameObject: {fileID: 5224514762466500625}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 340797528563d474e8bdd2ab6614b782, type: 3}
+  m_Script: {fileID: 11500000, guid: 073cb2c916657494288c7538abfdee7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
+--- !u!1 &6740100923450810453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8402939630684884151}
+  - component: {fileID: 6642785422638037565}
+  m_Layer: 6
+  m_Name: TargetDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8402939630684884151
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740100923450810453}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 846134222967933892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6642785422638037565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740100923450810453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 258efadc2bfa59549ae9e531c26ec9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerCheck:
+    serializedVersion: 2
+    m_Bits: 64
+  radius: 30
+  colliderList: []
 --- !u!1 &7524727918912182282
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +392,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 415637829
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 8567208255763837972, guid: d84236f26ad30684b88f634c7e60a85c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -402,10 +438,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventCalled: 0
-  OnStartAttackEvent:
+  OnStartNA_SkillEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnEndAttackEvent:
+  OnEndNA_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartES_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndES_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartEB_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndEB_SkillEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &5675764926838733214

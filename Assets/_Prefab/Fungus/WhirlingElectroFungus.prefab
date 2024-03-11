@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3961002432324456962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7393164103687008814}
+  - component: {fileID: 1339792147317525966}
+  m_Layer: 6
+  m_Name: TargetDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7393164103687008814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961002432324456962}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6433314391802433527}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1339792147317525966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961002432324456962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 258efadc2bfa59549ae9e531c26ec9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerCheck:
+    serializedVersion: 2
+    m_Bits: 64
+  radius: 30
+  colliderList: []
 --- !u!1 &4090938274253673342
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,11 +145,10 @@ GameObject:
   - component: {fileID: 2725203677835890115}
   - component: {fileID: 114530970104641533}
   - component: {fileID: 6329445916849355690}
-  - component: {fileID: 8957663109606843019}
   - component: {fileID: 8362461189903557333}
   - component: {fileID: 5852776018693098247}
-  - component: {fileID: 2960897613165998913}
-  - component: {fileID: 3745689066428699702}
+  - component: {fileID: 8189362701752846389}
+  - component: {fileID: 7814301288693460523}
   m_Layer: 9
   m_Name: WhirlingElectroFungus
   m_TagString: Fungus
@@ -124,6 +172,7 @@ Transform:
   - {fileID: 8134735884580891075}
   - {fileID: 159139985866124104}
   - {fileID: 1188395803355167265}
+  - {fileID: 7393164103687008814}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &2725203677835890115
@@ -209,7 +258,7 @@ MonoBehaviour:
     atk: 0
     lv: 0
     critRate: 5
-    critDamage: 50
+    critDamagePercent: 50
     elementalMastery: 0
     moveSpeed: 0
     dashTime: 0
@@ -217,20 +266,9 @@ MonoBehaviour:
     dashStamina: 0
     fungusConfig: {fileID: 0}
     fungusStats: {fileID: 0}
+    skillConfig: {fileID: 0}
   fungusCurrentStatusHUD: {fileID: 0}
   fungusSlotHUD: {fileID: 0}
---- !u!114 &8957663109606843019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5970534858066680094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d222edf12a654649a5091986bd0ed7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8362461189903557333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f03af94210ade3408cd527530dee7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2960897613165998913
+--- !u!114 &8189362701752846389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,11 +302,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5970534858066680094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4b9d872248b5d44a138d01ce64a0e0, type: 3}
+  m_Script: {fileID: 11500000, guid: bf37d586e4613704c894c153640df779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
---- !u!114 &3745689066428699702
+--- !u!114 &7814301288693460523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,10 +314,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5970534858066680094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 340797528563d474e8bdd2ab6614b782, type: 3}
+  m_Script: {fileID: 11500000, guid: 24d941ab2dbd6ca409ce634b8b3b3793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
+  eSTimeIsCooling: 0
+  eBTimeIsCooling: 0
+  eSTime_Cooldown: 0
+  eBTime_Cooldown: 0
 --- !u!1 &8559875891498196136
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,11 +441,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5477e06ae7bddf458b8f01529837365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventCalled: 0
-  OnStartAttackEvent:
+  isNA_ingEvent: 0
+  isES_ingEvent: 0
+  isEB_ingEvent: 0
+  OnStartNA_SkillEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnEndAttackEvent:
+  OnEndNA_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartES_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndES_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartEB_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndEB_SkillEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &8293234276146855075

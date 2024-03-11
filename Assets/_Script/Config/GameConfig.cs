@@ -20,4 +20,7 @@ public class GameConfig
 
     public const float moveYBossSlotDuration = 0.2f;
 
+    public const float popUpDamageScaleNotCrit = 1.2f;
+    public const float popUpDamageScaleCrit = 1.5f;
+
 }

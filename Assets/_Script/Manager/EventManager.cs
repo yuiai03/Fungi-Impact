@@ -76,4 +76,12 @@ public class EventManager
     {
         onSpawnBossInit?.Invoke(bossInfo);
     }
+
+    //Kích hoạt khi sử dụng ES
+    public delegate void OnES_Skill(BossInfoReader bossInfo);
+    public static event OnES_Skill onES_Skill;
+    public static void ActionOnES_Skill(BossInfoReader bossInfo)
+    {
+        onES_Skill?.Invoke(bossInfo);
+    }
 }

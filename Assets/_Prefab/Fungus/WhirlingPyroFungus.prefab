@@ -96,11 +96,10 @@ GameObject:
   - component: {fileID: 2730475569797202933}
   - component: {fileID: 2451305864999443386}
   - component: {fileID: 6211207500067618760}
-  - component: {fileID: 2272255521885070939}
   - component: {fileID: 1985903175783249598}
   - component: {fileID: 4688785208267404243}
-  - component: {fileID: 87060193490463767}
-  - component: {fileID: 8143611845891029444}
+  - component: {fileID: 929633193121035683}
+  - component: {fileID: 8114372790000411658}
   m_Layer: 9
   m_Name: WhirlingPyroFungus
   m_TagString: Fungus
@@ -124,6 +123,7 @@ Transform:
   - {fileID: 8599750488275459919}
   - {fileID: 5747193346990220606}
   - {fileID: 6686560984869826529}
+  - {fileID: 8043636920685569610}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &2730475569797202933
@@ -217,20 +217,9 @@ MonoBehaviour:
     dashStamina: 0
     fungusConfig: {fileID: 0}
     fungusStats: {fileID: 0}
+    skillConfig: {fileID: 0}
   fungusCurrentStatusHUD: {fileID: 0}
   fungusSlotHUD: {fileID: 0}
---- !u!114 &2272255521885070939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658817953165979590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d222edf12a654649a5091986bd0ed7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1985903175783249598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f03af94210ade3408cd527530dee7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &87060193490463767
+--- !u!114 &929633193121035683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,11 +253,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1658817953165979590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4b9d872248b5d44a138d01ce64a0e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 780cc4e020f8f9c48a47d589637463f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
---- !u!114 &8143611845891029444
+--- !u!114 &8114372790000411658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,10 +265,58 @@ MonoBehaviour:
   m_GameObject: {fileID: 1658817953165979590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 340797528563d474e8bdd2ab6614b782, type: 3}
+  m_Script: {fileID: 11500000, guid: 31ecec5e3e773894ebb59fc93fb3a334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3483270404147721269, guid: f211cd3492c0eed47915fc176f909e2e, type: 3}
+--- !u!1 &4668412398670376274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8043636920685569610}
+  - component: {fileID: 263896915398974850}
+  m_Layer: 6
+  m_Name: TargetDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8043636920685569610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4668412398670376274}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4765011622549633136}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &263896915398974850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4668412398670376274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 258efadc2bfa59549ae9e531c26ec9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerCheck:
+    serializedVersion: 2
+    m_Bits: 64
+  radius: 30
+  colliderList: []
 --- !u!1 &8981080519520468362
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,10 +438,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventCalled: 0
-  OnStartAttackEvent:
+  OnStartNA_SkillEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnEndAttackEvent:
+  OnEndNA_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartES_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndES_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartEB_SkillEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndEB_SkillEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &2919634635389130583

@@ -26,7 +26,7 @@ public class FungusData
     public int lv;
 
     public float critRate = 5f;
-    public float critDamage = 50f;
+    public float critDamagePercent = 50f;
     public int elementalMastery = 0;
 
     public float moveSpeed;
@@ -37,6 +37,8 @@ public class FungusData
 
     public FungusConfig fungusConfig;
     public FungusStats fungusStats;
+
+    public FungusSkillConfig skillConfig;
 
 
     public Action<float, float> OnHealthChangeEvent;

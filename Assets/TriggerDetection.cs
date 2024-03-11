@@ -6,13 +6,16 @@ public class TriggerDetection : DetectionBase
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        foreach(var tag in detectionTagList)
+        if (layerCheck == (layerCheck | (1 << collision.gameObject.layer)))
         {
-            if (collision.CompareTag(tag) && collision.tag == tag)
-            {
-                detectionEnterEvent?.Invoke(collision.gameObject);
-                break;
-            }
+            detectionEnterEvent.Invoke(collision.gameObject);
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (layerCheck == (layerCheck | (1 << collision.gameObject.layer)))
+        {
+            detectionStayEvent.Invoke(collision.gameObject);
         }
     }
 }

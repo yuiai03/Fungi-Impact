@@ -1,9 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public interface ISkill
 {
-    void NA_Skill();
-
-    void ES_Skill();
-
-    void EB_Skill();
+    void ShowcaseSkill(Transform target, Vector2 direction);
 }

@@ -32,7 +32,11 @@ public class BossBullet : MonoBehaviour
     }
     public void MoveToTarget()
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            rb2d.velocity = Vector2.zero * speed;
+            return;
+        }
 
         Vector3 targetPos = target.transform.position;
         direction = (targetPos - transform.position).normalized;
@@ -41,19 +45,18 @@ public class BossBullet : MonoBehaviour
 
     void TriggerDetection(GameObject @object)
     {
-        if (@object.GetComponent<FungusController>())
+        if (@object.GetComponent<HealthBase>())
         {
-            FungusController fungusController = @object.GetComponent<FungusController>();
-
-            if (fungusController.IsNA_ing) return;
-
-            fungusController.FungusHealth.TakeDamage(bossInfo.BossData.damage);
-
-            Vector3 collisionPos = @object.transform.position;
-            TextPopUp textPopUp = poolManager.SpawnObj(poolManager.GetTextPopUp(), collisionPos, PoolType.TextPopUp);
-            textPopUp.SetPopUpDamage(bossInfo.BossData.damage, bossInfo.BossData.bossConfig.bossColor);
+            int atk = bossInfo.BossData.damage;
+            @object.GetComponent<HealthBase>().TakeDamage(atk);
         }
 
         gameObject.SetActive(false);
+
+        if (@object.GetComponent<SkillBase>())
+        {
+
+        }
+
     }
 }

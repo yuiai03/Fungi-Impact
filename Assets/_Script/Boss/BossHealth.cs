@@ -1,15 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static EventManager;
 
-public class BossHealth : MonoBehaviour
+public class BossHealth : HealthBase
 {
     private BossData bossData;
-
-    public Action<int> OnTakeDamageEvent;
-    public Action OnDiedEvent;
 
     private void Awake()
     {
@@ -27,13 +21,16 @@ public class BossHealth : MonoBehaviour
         bossData = info.BossData;
     }
 
-    public void TakeDamage(int value)
+    public override void TakeDamage(int value)
     {
-        bossData.health -= value;
+        int damage = value;
+
+        bossData.health -= damage;
 
         if (bossData.health <= 0) bossData.health = 0;
 
-        var takingDamage = value;
+
+        var takingDamage = damage;
 
         OnTakeDamageEvent?.Invoke(takingDamage);
         if(bossData.health <= 0)
@@ -43,4 +40,26 @@ public class BossHealth : MonoBehaviour
         }
     }
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

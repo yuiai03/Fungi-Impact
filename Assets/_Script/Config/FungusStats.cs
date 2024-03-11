@@ -19,7 +19,7 @@ public class FungusStats : ScriptableObject
     public float dashForce = 15f;
     public int dashStamina = 20;
 
-    public float critRate = 5f;
-    public float critDamage = 50f;
+    public float critRatePercent = 5f;
+    public float critDamagePercent = 50f;
     public int elementalMastery = 0;
 }

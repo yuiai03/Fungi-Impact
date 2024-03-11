@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static EventManager;
 
-public class FungusController : MonoBehaviour
+public abstract class FungusController : MonoBehaviour
 {
 
     #region Variables
@@ -14,39 +14,42 @@ public class FungusController : MonoBehaviour
     public bool IsDashCoolingDown { get; set; }
     public bool IsDied { get; set; }
     public bool IsDashing { get; set; }
-
     public bool IsPressDash { get; set; }
-
     public bool IsUsingSkill { get; set; }
-    public bool IsPressNA;
+
+
+    public bool IsPressNA { get; set; }
     public bool IsNA_ing { get; set; }
-    public bool CanNA => !IsNA_ing;
+    public bool CanNA => !IsNA_ing && !IsES_ing && !IsEB_ing;
 
-    public bool IsPressES;
+
+    public bool IsPressES { get; set; }
     public bool IsES_ing { get; set; }
-    public bool CanES => !IsES_ing && !IsDashing;
+    public bool CanES => !IsES_ing && !IsEB_ing && FungusAttack.eSTimeIsCooling == 0;
 
-    public bool IsPressEB;
+
+    public bool IsPressEB { get; set; }
     public bool IsEB_ing { get; set; }
-    public bool CanEB => !IsEB_ing && !IsDashing;
+    public bool CanEB => !IsEB_ing && !IsES_ing && FungusAttack.eBTimeIsCooling == 0;
 
     public Vector2 MoveDirection { get; set; }
     public Vector2 LastDirection { get; set; }
     public Vector2 AttackDirection { get; set; }
 
-    protected bool CanDash => StaminaEnough && !IsDashing && !IsNA_ing && !IsDashCoolingDown;
-    protected bool CanMove => !IsDashing;
+    protected virtual bool CanMove => !IsDashing;
+    protected bool CanDash => StaminaEnough && !IsDashing && !IsUsingSkill && !IsDashCoolingDown;
     protected bool StaminaEnough => fungusManager.fungusStamina.CurrentStamina >= FungusInfo.FungusData.dashStamina;
 
     public Rigidbody2D rb2d { get; private set; }
     public CapsuleCollider2D capsuleCollider2D { get; private set; }
-    public AnimationEvent animationEvent { get; private set; }
+    public FungusAniEvent fungusAniEvent { get; private set; }
     public CharacterAnimator fungusAnimator { get; private set; }
+    public TargetDetector TargetDetector { get; private set; }
 
     public FungusHealth FungusHealth { get; private set; }
     public FungusStamina FungusStamina { get; private set; }
     public FungusInfoReader FungusInfo { get; private set; }
-    public FungusSkill FungusSkill { get; private set; }
+    public FungusAttack FungusAttack { get; private set; }
 
 
     public Action OnStopDashEvent;
@@ -67,10 +70,6 @@ public class FungusController : MonoBehaviour
         _GetComponents();
         _ListenEvents();
     }
-    protected void OnDestroy()
-    {
-        _RemoveEvents();
-    }
     protected void OnEnable()
     {
         IsDashCoolingDown = false;
@@ -86,52 +85,45 @@ public class FungusController : MonoBehaviour
         FungusStamina = GetComponent<FungusStamina>();
         FungusHealth = GetComponent<FungusHealth>();
         FungusInfo = GetComponent<FungusInfoReader>();
-        FungusSkill = GetComponent<FungusSkill>();
-        
-        capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+        FungusAttack = GetComponent<FungusAttack>();
 
+        capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         rb2d = GetComponent<Rigidbody2D>();
 
-        animationEvent = GetComponentInChildren<AnimationEvent>();
+        fungusAniEvent = GetComponentInChildren<FungusAniEvent>();
         fungusAnimator = GetComponentInChildren<CharacterAnimator>();
+        TargetDetector = GetComponentInChildren<TargetDetector>();
     }
     protected virtual void _ListenEvents()
     {
         EventManager.onFungusDie += OnDied;
 
-        animationEvent.OnStartAttackEvent.AddListener(() => OnStartAttack());
-        animationEvent.OnEndAttackEvent.AddListener(() => OnEndAttack());
+        fungusAniEvent.OnStartNA_SkillEvent.AddListener(() => OnStartNA_Skill());
+        fungusAniEvent.OnEndNA_SkillEvent.AddListener(() => OnEndNA_Skill());
+
+        fungusAniEvent.OnStartES_SkillEvent.AddListener(() => OnStartES_Skill());
+        fungusAniEvent.OnEndES_SkillEvent.AddListener(() => OnEndES_Skill());
+
+        fungusAniEvent.OnStartEB_SkillEvent.AddListener(() => OnStartEB_Skill());
+        fungusAniEvent.OnEndEB_SkillEvent.AddListener(() => OnEndEB_Skill());
     }
 
-    protected virtual void OnStartAttack()
-    {
-        fungusManager.InteractSlotState(false);
-        IsNA_ing = true;
-        IsUsingSkill = true;
-    }
-
-    protected virtual void OnEndAttack()
-    {
-        fungusManager.InteractSlotState(true);
-        FungusSkill.NA_Skill();
-        IsNA_ing = false;
-        IsUsingSkill = false;
-    }
     protected virtual void _RemoveEvents() { }
 
     protected virtual void UpdateInput()
     {
         if (IsDied) return;
 
-        if (IsNA_ing)
+
+        if (IsUsingSkill)
         {
             rb2d.velocity = new Vector2(MoveDirection.x, MoveDirection.y);
             return;
         }
 
+        Skill();
         Move();
         Dash();
-        Skill();
     }
     protected virtual void UpdateAnimation()
     {
@@ -150,7 +142,8 @@ public class FungusController : MonoBehaviour
         float pressMoveY = Input.GetAxisRaw("Vertical");
         if (CanMove)
         {
-            if ((pressMoveX == 0 && pressMoveY == 0) && (MoveDirection.x != 0 || MoveDirection.y != 0))
+            bool isIdle = pressMoveX == 0 && pressMoveY == 0;
+            if (isIdle && (MoveDirection.x != 0 || MoveDirection.y != 0))
             {
                 LastDirection = MoveDirection;
             }
@@ -168,8 +161,7 @@ public class FungusController : MonoBehaviour
         {
             if (MoveDirection == Vector2.zero)
             {
-                if(LastDirection.x == 0 && LastDirection.y == 0) LastDirection = new Vector2(0, -1);
-                MoveDirection = LastDirection;
+                SetDirectionInit();
             }
             rb2d.velocity = MoveDirection.normalized * FungusInfo.FungusData.dashForce;
 
@@ -179,6 +171,13 @@ public class FungusController : MonoBehaviour
             stopDashCoroutine = StartCoroutine(StopDashCoroutine());
         }
 
+    }
+    public void SetDirectionInit()
+    {
+        if (LastDirection.x == 0 && LastDirection.y == 0) 
+            LastDirection = new Vector2(0, -1);
+        
+        MoveDirection = LastDirection;
     }
     IEnumerator StopDashCoroutine()
     {
@@ -204,60 +203,95 @@ public class FungusController : MonoBehaviour
 
     protected virtual void Skill()
     {
+        IsPressNA = Input.GetMouseButtonDown(0);
+        IsPressES = Input.GetKeyDown(KeyCode.E);
+        IsPressEB = Input.GetKeyDown(KeyCode.Q);
+
         NA(); ES(); EB();
     }
 
-    void NA()
+    protected virtual void NA()
     {
-        IsPressNA = Input.GetMouseButtonDown(0);
-
         if (IsPressNA && CanNA)
         {
             if (cameraCollider.CheckTargetDetection() != null)
             {
-                Vector3 direction;
-                direction = (cameraCollider.GetTargetTransform().position - transform.position).normalized;
+                Vector3 targetPos = cameraCollider.GetTargetTransform().position;
+
+                Vector3 direction = (targetPos - transform.position).normalized;
+
                 AttackDirection = direction;
+                LastDirection = AttackDirection;
             }
             else
             {
-                if (MoveDirection.x == 0 && MoveDirection.y == 0)
-                {
-                    AttackDirection = LastDirection;
-                }
-                else if (MoveDirection.x != 0 || MoveDirection.y != 0)
-                {
-                    AttackDirection = LastDirection = MoveDirection;
-                }
+                SetAttackDirectionWithOutTarget();
             }
-            fungusAnimator.SetTriggerAttack();
+            fungusAnimator.SetTriggerNA();
         }
     }
 
-
-    void ES()
+    protected virtual void ES()
     {
-        IsPressES = Input.GetKeyDown(KeyCode.E);
-
         if (IsPressES && CanES)
         {
-            Debug.Log("ES");
+            if (TargetDetector.Target() != null)
+            {
+                Vector3 targetPos = TargetDetector.Target().position;
+
+                Vector3 direction = (targetPos - transform.position).normalized;
+
+                AttackDirection = direction;
+                LastDirection = AttackDirection;
+            }
+            else
+            {
+                SetAttackDirectionWithOutTarget();
+            }
+            fungusAnimator.SetTriggerES();
+            IsNA_ing = false;
         }
     }
 
-    void EB()
+    protected virtual void EB()
     {
-        IsPressEB = Input.GetKeyDown(KeyCode.Q);
-
         if (IsPressEB && CanEB)
         {
-            Debug.Log("EB");
+            if (TargetDetector.Target() != null)
+            {
+                Vector3 targetPos = TargetDetector.Target().position;
+
+                Vector3 direction = (targetPos - transform.position).normalized;
+
+                AttackDirection = direction;
+                LastDirection = AttackDirection;
+            }
+            else
+            {
+                SetAttackDirectionWithOutTarget();
+            }
+            fungusAnimator.SetTriggerEB();
+            IsNA_ing = false;
         }
     }
+
+    public void SetAttackDirectionWithOutTarget()
+    {
+        if (MoveDirection.x == 0 && MoveDirection.y == 0)
+        {
+            AttackDirection = LastDirection;
+        }
+        else
+        {
+            AttackDirection = LastDirection = MoveDirection;
+        }
+    }
+
     public Vector3 DirectionAttackWithOutTarget()
     {
         Vector3 direction;
-        if (LastDirection.x == 0 && LastDirection.y == 0) direction = new Vector2(0, -1);
+        if (LastDirection.x == 0 && LastDirection.y == 0) 
+            direction = new Vector2(0, -1);
 
         else if (MoveDirection.x == 0 && MoveDirection.y == 0)
             direction = new Vector2(LastDirection.x, LastDirection.y);
@@ -285,7 +319,7 @@ public class FungusController : MonoBehaviour
         }
     }
 
-
+    #region Set State
     public void DiedState()
     {
         MoveDirection = Vector2.zero;
@@ -302,8 +336,15 @@ public class FungusController : MonoBehaviour
         capsuleCollider2D.enabled = true;
     }
 
+    public void UsingSkillState(bool state)
+    {
+        IsUsingSkill = state;
+        fungusManager.InteractSlotState(!state);
+    }
+    #endregion
 
-    //Event
+
+    #region On Event
     protected virtual void OnDied()
     {
         if (gameObject.activeSelf)
@@ -313,4 +354,59 @@ public class FungusController : MonoBehaviour
         }
     }
 
+    //Event khi dùng kỹ năng đánh thường
+    protected virtual void OnStartNA_Skill()
+    {
+        NA_State(true);
+    }
+
+    protected virtual void OnEndNA_Skill()
+    {
+        FungusAttack.NA_Skill();
+        NA_State(false);
+    }
+
+    //Event khi dùng kỹ năng nguyên tố
+
+    protected virtual void OnStartES_Skill()
+    {
+        ES_State(true);
+    }
+
+    protected virtual void OnEndES_Skill()
+    {
+        FungusAttack.ES_Skill();
+        ES_State(false);
+    }
+
+    //Event khi dùng kỹ năng nộ
+
+    public virtual void OnStartEB_Skill()
+    {
+        EB_State(true);
+    }
+
+    public virtual void OnEndEB_Skill()
+    {
+        FungusAttack.EB_Skill();
+        EB_State(false);
+    }
+
+    //trạng thái skill
+    public void NA_State(bool state)
+    {
+        IsNA_ing = state;
+        UsingSkillState(state);
+    }
+    public void ES_State(bool state)
+    {
+        IsES_ing = state;
+        UsingSkillState(state);
+    }
+    public void EB_State(bool state)
+    {
+        IsEB_ing = state;
+        UsingSkillState(state);
+    }
+    #endregion
 }

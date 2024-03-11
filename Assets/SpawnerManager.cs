@@ -32,27 +32,38 @@ public class SpawnerManager : Singleton<SpawnerManager>
 
             FungusData fungusData = new FungusData();
 
-            fungusData.maxHealth = fungusPackedConfig.stats.maxHealth;
-            fungusData.health = fungusPackedConfig.stats.maxHealth;
-
+            //stats
             fungusData.atk = fungusPackedConfig.stats.atk;
             fungusData.lv = fungusPackedConfig.stats.lv;
             fungusData.moveSpeed = fungusPackedConfig.stats.moveSpeed;
 
+            //health
+            fungusData.maxHealth = fungusPackedConfig.stats.maxHealth;
+            fungusData.health = fungusPackedConfig.stats.maxHealth;
+
+
+            //dash
             fungusData.dashTime = fungusPackedConfig.stats.dashTime;
             fungusData.dashForce = fungusPackedConfig.stats.dashForce;
             fungusData.dashStamina = fungusPackedConfig.stats.dashStamina;
 
+            //crit
+            fungusData.critRate = fungusPackedConfig.stats.critRatePercent;
+            fungusData.critDamagePercent = fungusPackedConfig.stats.critDamagePercent;
+            
+            //elementalMastery
+            fungusData.elementalMastery = fungusPackedConfig.stats.elementalMastery;
+
+            //reference
             fungusData.fungusConfig = fungusPackedConfig.config;
             fungusData.fungusStats = fungusPackedConfig.stats;
-
-
+            fungusData.skillConfig = fungusPackedConfig.skillConfig;
 
             fungusInfo.GetData(fungusData);
 
             fungusInfoList.Add(fungusInfo);
         }
-
+        
         EventManager.ActionOnSpawnFungusInit(fungusInfoList);
     }
 
