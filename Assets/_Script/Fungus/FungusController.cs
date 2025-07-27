@@ -36,7 +36,7 @@ public abstract class FungusController : MonoBehaviour
     public Vector2 LastDirection { get; set; }
     public Vector2 AttackDirection { get; set; }
 
-    protected virtual bool CanMove => !IsDashing;
+    protected virtual bool CanMove => !IsDashing && !GameplayManager.Instance.isEndGame;
     protected bool CanDash => StaminaEnough && !IsDashing && !IsUsingSkill && !IsDashCoolingDown;
     protected bool StaminaEnough => fungusManager.fungusStamina.CurrentStamina >= FungusInfo.FungusData.dashStamina;
 
@@ -120,13 +120,6 @@ public abstract class FungusController : MonoBehaviour
     {
         if (IsDied) return;
 
-
-        //if (IsUsingSkill)
-        //{
-        //    rb2d.linearVelocity = new Vector2(MoveDirection.x, MoveDirection.y);
-        //    return;
-        //}
-
         Skill();
         Move();
         Dash();
@@ -158,6 +151,10 @@ public abstract class FungusController : MonoBehaviour
             rb2d.linearVelocity = new Vector2(pressMoveX * moveSpeed, pressMoveY * moveSpeed);
             MoveDirection = new Vector2(pressMoveX, pressMoveY).normalized;
             fungusAnimator.SetMoveDirection(MoveDirection);
+        }
+        else
+        {
+            rb2d.linearVelocity = Vector2.zero;
         }
     }
     protected virtual void Dash()

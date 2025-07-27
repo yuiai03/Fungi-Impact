@@ -28,7 +28,7 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
         AudioManager.Instance.PlayOnClickButton();
         Scene currentScene = SceneManager.GetActiveScene();
-        if(currentScene.name == "Room")
+        if(currentScene.name == "Home")
         {
             AudioManager.Instance.PlayTheme();
         }
