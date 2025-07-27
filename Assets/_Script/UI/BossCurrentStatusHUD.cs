@@ -9,6 +9,9 @@ public class BossCurrentStatusHUD : CurrentStatusHUD
 
     private void Awake()
     {
+        lvText.gameObject.SetActive(false);
+        healthText.gameObject.SetActive(false);
+        currentHealthSlider.gameObject.SetActive(false);
         EventManager.onSpawnBossInit += OnSpawnBossInit;
 
     }
@@ -33,6 +36,10 @@ public class BossCurrentStatusHUD : CurrentStatusHUD
 
         bossInfo.BossController.BossHealth.OnTakeDamageEvent += OnTakeDamage;
         bossInfo.BossData.OnHealthChangeEvent += OnHealthChange;
+
+        lvText.gameObject.SetActive(true);
+        healthText.gameObject.SetActive(true);
+        currentHealthSlider.gameObject.SetActive(true);
     }
     protected override void OnTakeDamage(int value)
     {

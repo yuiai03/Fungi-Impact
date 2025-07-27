@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FungusHealth : HealthBase
 {
-    private FungusData fungusData;
+    public FungusData fungusData { get; private set; }
     private void Awake()
     {
         EventManager.onSwitchFungus += OnSwitchFungus;
@@ -22,6 +22,8 @@ public class FungusHealth : HealthBase
     }
     public override void TakeDamage(int value)
     {
+        if (FungusManager.Instance.isHaveShield) return;
+
         int damage = value;
 
         fungusData.health -= damage;

@@ -5,7 +5,5 @@ using UnityEngine;
 
 public class FloatingHydroController : FungusController
 {
-    private void Start()
-    {
-    }
+
 }

@@ -30,7 +30,6 @@ public class WhirlingCyroEB_Skill : EB_Skill
         {
             if (!polygonCollider2D.enabled)
             {
-                Debug.Log("enable");
                 polygonCollider2D.enabled = true;
             }
             yield return new WaitForSeconds(0.5f);
@@ -62,6 +61,7 @@ public class WhirlingCyroEB_Skill : EB_Skill
     {
         if (obj.GetComponent<HealthBase>())
         {
+            AudioManager.Instance.PlayEnemyAttack();
             CauseDamage(obj);
             polygonCollider2D.enabled = false;
 

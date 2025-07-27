@@ -1,10 +1,9 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
-//b?n ??n ??nh v? m?c tiêu
+//b?n ??n ??nh v? m?c tiï¿½u
 public class FloatingHydroES_Skill : ES_Skill
 {
     [SerializeField] private FloatingHydroES_Explosion floatingHydroES_Explosion;
@@ -40,7 +39,7 @@ public class FloatingHydroES_Skill : ES_Skill
         {
             Direction = Helper.TargetDirection(Target, transform);
         }
-        rb2d.velocity = Direction * MoveSpeed;
+        rb2d.linearVelocity = Direction * MoveSpeed;
     }
     public override void ShowcaseSkill(Transform target, Vector2 direction)
     {

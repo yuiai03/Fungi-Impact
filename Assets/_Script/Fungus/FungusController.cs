@@ -58,6 +58,7 @@ public abstract class FungusController : MonoBehaviour
     private Coroutine fungusDieCoroutine;
     private Coroutine stopDashCoroutine;
     private Coroutine dashCoolDownCoroutine;
+    private Coroutine hurtCoroutine;
 
     protected CameraCollider cameraCollider => CameraCollider.Instance;
     protected FungusManager fungusManager => FungusManager.Instance;
@@ -77,6 +78,8 @@ public abstract class FungusController : MonoBehaviour
     }
     protected void Update()
     {
+        if (GameplayManager.Instance.isEndGame) return;
+
         UpdateInput();
         UpdateAnimation();
     }
@@ -96,6 +99,9 @@ public abstract class FungusController : MonoBehaviour
     }
     protected virtual void _ListenEvents()
     {
+
+        FungusHealth.OnTakeDamageEvent += OnTakeDamage;
+
         EventManager.onFungusDie += OnDied;
 
         fungusAniEvent.OnStartNA_SkillEvent.AddListener(() => OnStartNA_Skill());
@@ -115,11 +121,11 @@ public abstract class FungusController : MonoBehaviour
         if (IsDied) return;
 
 
-        if (IsUsingSkill)
-        {
-            rb2d.velocity = new Vector2(MoveDirection.x, MoveDirection.y);
-            return;
-        }
+        //if (IsUsingSkill)
+        //{
+        //    rb2d.linearVelocity = new Vector2(MoveDirection.x, MoveDirection.y);
+        //    return;
+        //}
 
         Skill();
         Move();
@@ -149,7 +155,7 @@ public abstract class FungusController : MonoBehaviour
             }
 
             float moveSpeed = FungusInfo.FungusData.moveSpeed;
-            rb2d.velocity = new Vector2(pressMoveX * moveSpeed, pressMoveY * moveSpeed);
+            rb2d.linearVelocity = new Vector2(pressMoveX * moveSpeed, pressMoveY * moveSpeed);
             MoveDirection = new Vector2(pressMoveX, pressMoveY).normalized;
             fungusAnimator.SetMoveDirection(MoveDirection);
         }
@@ -159,11 +165,13 @@ public abstract class FungusController : MonoBehaviour
         IsPressDash = Input.GetMouseButtonDown(1);
         if (IsPressDash && CanDash)
         {
+            AudioManager.Instance.PlayDash();
+
             if (MoveDirection == Vector2.zero)
             {
                 SetDirectionInit();
             }
-            rb2d.velocity = MoveDirection.normalized * FungusInfo.FungusData.dashForce;
+            rb2d.linearVelocity = MoveDirection.normalized * FungusInfo.FungusData.dashForce;
 
             fungusManager.fungusStamina.CurrentStamina -= FungusInfo.FungusData.dashStamina;
 
@@ -319,11 +327,19 @@ public abstract class FungusController : MonoBehaviour
         }
     }
 
+    public IEnumerator HurtCoroutine()
+    {
+        FungusInfo.model.color = FungusInfo.hurtColor;
+        yield return new WaitForSeconds(0.1f);
+        FungusInfo.model.color = Color.white;
+
+    }
+
     #region Set State
     public void DiedState()
     {
         MoveDirection = Vector2.zero;
-        rb2d.velocity = MoveDirection;    
+        rb2d.linearVelocity = MoveDirection;    
 
         capsuleCollider2D.enabled = false;
         fungusAnimator.SetTriggerDie();
@@ -345,6 +361,11 @@ public abstract class FungusController : MonoBehaviour
 
 
     #region On Event
+    void OnTakeDamage(int value)
+    {
+        if (hurtCoroutine != null) StopCoroutine(hurtCoroutine);
+        hurtCoroutine = StartCoroutine(HurtCoroutine());
+    }
     protected virtual void OnDied()
     {
         if (gameObject.activeSelf)
